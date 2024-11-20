@@ -13,8 +13,8 @@ const SideBar = ({ activeMenu, setActiveMenu, clickNav }) => {
   return (
     <section id="sidebar" className={sideActive}>
       <a href="#" className="brand">
-        <i className="bx bxs-smile" />
-        <span className="text">AdminHub</span>
+        <img src="/images/logo-mikrotik1.jpg" className="mx-2" style={{width: "45px"}} />
+        <span className="text-nowrap">smkn4 bogor</span>
       </a>
       <ul className="side-menu top">
         {menuItems.map((item, index) => (

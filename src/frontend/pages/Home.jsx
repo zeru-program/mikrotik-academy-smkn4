@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav"
 import Footer from "../components/Footer"
+import BackToTop from "../components/BackToTop"
+import Splash from "../components/Splash"
 import HeaderNavbarLarge from "../components/HeaderNavbarLarge"
 import GetCms from "../../backend/GetCms";
 import GetTrainer from "../../backend/GetTrainer";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const HeroHeader = () => {
   return (
     <header
       className="w-100 d-flex justify-content-center align-items-center hero-home"
+      data-aos="fade-in"
+      data-aos-delay="2300"
       style={{
         background:
           "url('https://mikrotik.smkdp1jkt.sch.id/wp-content/uploads/2018/09/MIKROTIK-AKADEMI-2-768x392.jpg') center center",
@@ -23,21 +29,23 @@ const HeroHeader = () => {
 const HomeSection = () => {
   const { dataCms } = GetCms()
   return (
-    <section className="w-100 shadow-hover bg-sc mb25 box-opening shadow-sm py-3 d-flex flex-wrap">
+    <section className="w-100 shadow-hover bg-sc mb25 box-opening shadow-sm py-3 d-flex flex-wrap" data-aos="fade-up" data-aos-delay="2300">
       <div className="container-fluid">
         <img
           src="/images/kepala_sekolah.jpg"
-          className="img-hero-home"
+          className="img-hero-home" 
+          data-aos="zoom-in" 
+          data-aos-delay="2500"
           alt="Picture Kepala Sekolah"
         />
       </div>
       <div className="container-fluid mt-2">
-        <h1>{dataCms.find((item) => item.id === "h1")?.content  || "Sambutan Kepala Sekolah"}</h1>
+        <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "h1")?.content  || "Sambutan Kepala Sekolah"}</h1>
         <div className="position-relative con-hr w-100">
           <div className="hr-ac position-absolute" />
           <hr className="w-100" />
         </div>
-        <div className="w-100" style={{ whiteSpace: "pre-line" }}>
+        <div data-aos="fade-up" data-aos-delay="800" className="w-100" style={{ whiteSpace: "pre-line" }}>
           <p>Assalamualaikum Warahmatullahi Wabarakatuh,</p>
           <p>Salam sejahtera untuk kita semua. Pertama-tama, marilah kita panjatkan puji dan syukur ke hadirat Allah Subhanahu wa Ta'ala atas segala nikmat dan karunia-Nya. Pada kesempatan yang istimewa ini, saya ingin menyampaikan rasa bangga dan apresiasi yang setinggi-tingginya atas capaian SMK Negeri 4 Kota Bogor yang telah sukses menyelesaikan tiga tahun Program SMK Pusat Keunggulan pada tahun 2024.</p>
           <p>Dengan keberhasilan ini, SMK Negeri 4 Kota Bogor kini telah menyandang gelar sebagai SMK Pusat Keunggulan. Gelar ini bukan sekadar penghargaan, tetapi juga amanat dan tanggung jawab besar untuk terus mengembangkan mutu pendidikan kejuruan yang berorientasi pada dunia usaha, dunia industri, dunia kerja, serta pengembangan kewirausahaan.</p>
@@ -66,38 +74,38 @@ const HomeSection = () => {
 const ProfileSekolah = () => {
   const { dataCms } = GetCms()
   return (
-    <section className="w-100 p-0 section-profile-sekolah gap-lg-25 mb-lg-2 d-grid">
+    <section className="w-100 p-0 section-profile-sekolah gap-lg-25 mb-lg-2 d-grid" data-aos="fade-up" id="profile-sekolah">
       <div className="d-flex flex-column">
         <div className="w-auto shadow-hover bg-sc mb25 box-ps-1 shadow-sm py-3 d-flex flex-column">
           <div className="w-100 justify-content-center d-flex">
-            <img src="/images/logo-mikrotik3.png" className="" style={{width: "90%"}} alt="logo mikrotik" />
+            <img data-aos="zoom-in" data-aos-delay="500" src="/images/logo-mikrotik3.png" className="" style={{width: "90%"}} alt="logo mikrotik" />
           </div>
           <div className="container-fluid mt-3">
             <div className="position-relative con-hr w-100">
               <div className="hr-ac position-absolute" />
               <hr className="w-100" />
             </div>
-            <p>
+            <p data-aos="fade-up" data-aos-delay="500">
              {dataCms.find((item) => item.id === "p1")?.content  || "Loading.."}
             </p>  
           </div>
         </div>
-        <div className="w-auto shadow-hover bg-sc mb25 box-ps-2 shadow-sm py-3 d-flex">
+        <div className="w-auto shadow-hover bg-sc mb25 box-ps-2 shadow-sm py-3 d-flex" data-aos="fade-up">
           <div className="container-fluid">
-            <h1>{dataCms.find((item) => item.id === "p2")?.content  || "Loading.."}</h1>
+            <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p2")?.content  || "Loading.."}</h1>
             <div className="position-relative con-hr w-100">
               <div className="hr-ac position-absolute" />
               <hr className="w-100" />
             </div>
-            <p>
+            <p data-aos="fade-up" data-aos-delay="800">
               {dataCms.find((item) => item.id === "p3")?.content  || "Loading.."}
             </p>
           </div>
         </div>
       </div>
-      <div className="w-auto shadow-hover bg-sc mb-2 box-ps-3 shadow-sm py-3 d-flex">
+      <div className="w-auto shadow-hover bg-sc mb-2 box-ps-3 shadow-sm py-3 d-flex" data-aos="fade-up">
         <div className="container-fluid">
-          <h1>{dataCms.find((item) => item.id === "p4")?.content  || "Loading.."}</h1>
+          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p4")?.content  || "Loading.."}</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
@@ -111,25 +119,25 @@ const ProfileSekolah = () => {
 const MateriManfaat = () => {
   const { dataCms } = GetCms()
     return (
-    <section className="w-100 section-materi-manfaat mb-2 d-grid py-3 gap25">
-      <div className="bg-sc shadow-hover box-mt-1 shadow-sm py-3 d-flex">
+    <section className="w-100 section-materi-manfaat mb-2 d-grid py-3 gap25" id="materi-manfaat">
+      <div data-aos="fade-up" className="bg-sc shadow-hover box-mt-1 shadow-sm py-3 d-flex">
         <div className="container-fluid">
-          <h1>{dataCms.find((item) => item.id === "mm1")?.content  || "Loading.."}</h1>
+          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "mm1")?.content  || "Loading.."}</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
           </div>
-          <p>{dataCms.find((item) => item.id === "mm2")?.content  || "Loading.."}</p>
+          <p data-aos="fade-up" data-aos-delay="800">{dataCms.find((item) => item.id === "mm2")?.content  || "Loading.."}</p>
         </div>
       </div>
-      <div className="bg-sc shadow-hover box-mt-2 shadow-sm py-3 d-flex">
+      <div data-aos="fade-up" className="bg-sc shadow-hover box-mt-2 shadow-sm py-3 d-flex">
         <div className="container-fluid">
-          <h1>{dataCms.find((item) => item.id === "mm3")?.content  || "Loading.."}</h1>
+          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "mm3")?.content  || "Loading.."}</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
           </div>
-          <p>{dataCms.find((item) => item.id === "mm4")?.content  || "Loading.."}</p>
+          <p data-aos="fade-up" data-aos-delay="800">{dataCms.find((item) => item.id === "mm4")?.content  || "Loading.."}</p>
         </div>
       </div>
     </section>
@@ -157,9 +165,9 @@ const TrainerSection = () => {
   const { dataCms } = GetCms()
   const { dataTrainer } = GetTrainer()
   return (
-    <section className="w-100 h-auto shadow-hover bg-sc mb25 shadow-sm py-3 d-flex flex-wrap">
+    <section className="w-100 h-auto shadow-hover bg-sc mb25 shadow-sm py-3 d-flex flex-wrap" id="trainer" data-aos="fade-up">
       <div className="container-fluid">
-        <h1>
+        <h1 data-aos="fade-up" data-aos-delay="500">
           {dataCms.find((item) => item.id === "t1")?.content || "Loading.."}
         </h1>
         <div className="position-relative con-hr w-100">
@@ -169,11 +177,11 @@ const TrainerSection = () => {
         <div className="w-100 gap-3 mt-2 d-flex flex-wrap">
           {Array.isArray(dataTrainer) &&
             dataTrainer.map((tr, index) => (
-              <div className="box-trainer p-4 d-flex gap-3" key={index}>
+              <div className="box-trainer py-3 d-flex gap-3" key={index} data-aos="fade-up" data-aos-delay="800">
                 <div
                   className="img-trainer text-light position-relative shadow-sm"
                   style={{
-                    background: `linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,1)), url('${tr.image}') center center`,
+                    background: `linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.9)), url('${tr.image}') center center`,
                     backgroundSize: "cover",
                   }}
                 >
@@ -183,7 +191,6 @@ const TrainerSection = () => {
                 </div>
 
                 {/* Render gambar sertifikat berdasarkan nilai */}
-                <div className="d-flex justify-content-center flex-wrap gap-2">
                   {tr.sertifikat1 && (
                     <img
                       src={tr.sertifikat1}
@@ -198,7 +205,6 @@ const TrainerSection = () => {
                       alt="Sertifikat 2"
                     />
                   )}
-                </div>
               </div>
             ))}
         </div>
@@ -209,10 +215,10 @@ const TrainerSection = () => {
 
 const GaleryKomentar = () => {
     return (
-    <section className="w-100 section-galery py-3 gap25 d-grid">
+    <section className="w-100 section-galery py-3 gap25 d-grid" data-aos="fade-up">
      <div className="bg-sc shadow-hover box-gk-2 shadow-sm py-3 d-flex">
         <div className="container-fluid">
-          <h1>Komentar</h1>
+          <h1 data-aos="fade-up" data-aos-delay="500">Komentar</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
@@ -225,8 +231,16 @@ const GaleryKomentar = () => {
 }
 
 const Home = () => {
+    useEffect(() => {
+        AOS.init({
+            duration: 1000,
+            once: true,
+        })
+    }, [])
   return (
     <div>
+      <BackToTop />
+      <Splash />
       <HeaderNavbarLarge />
       <Nav />
       <HeroHeader />

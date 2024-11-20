@@ -1,16 +1,14 @@
-const UpdateCms = async (uniqueId, id, name, content) => {
+const UpdateStatusCms = async (id, status) => {
     const db = import.meta.env.VITE_DB;
     try {
-        const response = await fetch(`${db}/cms/${uniqueId}.json`, {
+        const response = await fetch(`${db}/cms_img/${id}.json`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                id,
-                name,
-                content,
-                last_modified: new Date()
+                status,
+                last_modified_by: "developer"
             })
         });
         return response.ok;
@@ -20,4 +18,4 @@ const UpdateCms = async (uniqueId, id, name, content) => {
     }
 }
 
-export default UpdateCms;
+export default UpdateStatusCms;

@@ -1,9 +1,9 @@
-const DeleteCms = async (id) => {
+const DeleteCmsImg = async (id) => {
    
     const db = import.meta.env.VITE_DB;
       
     try {
-        const response = await fetch(`${db}/cms/${id}.json`, {
+        const response = await fetch(`${db}/cms_img/${id}.json`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -17,4 +17,4 @@ const DeleteCms = async (id) => {
     }
 }
 
-export default DeleteCms;
+export default DeleteCmsImg;

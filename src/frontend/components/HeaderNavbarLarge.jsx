@@ -7,10 +7,9 @@ const HeaderNavbarLarge = () => {
         href="/"
       >
         <img
-          src="https://smkn4bogor.sch.id/assets/images/logo/logoSMKN4.svg"
+          src="/images/logo-mikrotik1.jpg"
           alt="SMKN 4 BOGOR Logo"
         />
-        <span>SMKN 4 BOGOR</span>
       </a>
     </header>
   );

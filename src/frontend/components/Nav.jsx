@@ -6,10 +6,9 @@ const Nav = () => {
       <div className="container-fluid position-relative">
         <a className="navbar-brand align-items-center gap-3" href="/">
           <img
-            src="https://smkn4bogor.sch.id/assets/images/logo/logoSMKN4.svg"
-            alt="SMKN 4 BOGOR Logo"
+            src="/images/logo-mikrotik1.jpg"
+            alt="Logo"
           />
-          <span className="mx-2">SMKN 4 BOGOR</span>
         </a>
         <button
           className="navbar-toggler"
@@ -35,11 +34,16 @@ const Nav = () => {
               </a>
             </li>
             <li className="nav-item">
+              <a className="nav-link" href="#materi-manfaat">
+                Materi &amp; Manfaat
+              </a>
+            </li>
+            <li className="nav-item">
               <a className="nav-link" href="#trainer">
                 Trainer Kami
               </a>
             </li>
-            <li className="nav-item">
+            {/*<li className="nav-item">
               <a className="nav-link" href="#partner">
                 Partner Kami
               </a>
@@ -48,7 +52,7 @@ const Nav = () => {
               <a className="nav-link" href="#">
                 Galery &amp; Komentar
               </a>
-            </li>
+            </li>*/}
           </ul>
         </div>
         <div className="nav-login-lg position-absolute">

@@ -46,7 +46,9 @@ body {
 	overflow-x: hidden;
 }
 
-
+.temp-update-class {
+    background: var(--grey);
+}
 
 
 
@@ -58,7 +60,7 @@ body {
 	width: 280px;
 	height: 100%;
 	background: var(--light);
-	z-index: 2000;
+	z-index: 500;
 	font-family: var(--lato);
 	transition: .3s ease;
 	overflow-x: hidden;
@@ -455,22 +457,27 @@ body {
 #content main .table-data .order table th {
 	padding-bottom: 12px;
 	font-size: 13px;
+	text-wrap: nowrap;
 	text-align: left;
 	border-bottom: 1px solid var(--grey);
 }
 #content main .table-data .order table td {
 	padding: 16px 0;
+	text-wrap: wrap;
+	text-overflow: ellipsis;
+	align-items: start;
+	align-content: start;
+	text-align: left;
 }
 #content main .table-data .order table tr td:first-child {
 	display: flex;
 	align-items: center;
 	grid-gap: 12px;
-	padding-left: 6px;
+	padding-left: 10px;
 }
 #content main .table-data .order table td img {
 	width: 36px;
 	height: 36px;
-	border-radius: 50%;
 	object-fit: cover;
 }
 #content main .table-data .order table tbody tr:hover {

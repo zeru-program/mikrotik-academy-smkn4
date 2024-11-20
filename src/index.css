@@ -40,6 +40,7 @@ body {
   background: var(--pm) !important;
 }
 
+
 .bg-pm {
   background: var(--pm);
 }
@@ -68,12 +69,26 @@ body {
   color: var(--black);
 }
 
+/* animated */
+.animate__bounceUp {
+    animation: bounceUp 1s ease infinite alternate;
+}
+@keyframes bounceUp {
+    0% {
+        transform: translateY(5px);
+    }
+
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
 /*navbar style*/
 .navbar {
   background: var(--sc) !important;
 }
 .navbar-brand img {
-  width: 35px;
+  width: 80px;
 }
 .navbar-toggler {
   background: var(--ac-low) !important;
@@ -103,7 +118,7 @@ body {
   border-bottom: 1px solid var(--pm);
 }
 .header-nav-lg img {
-  width: 40px;
+  width: 100px;
 }
 .header-nav-lg span {
   font-size: 22px;
@@ -115,6 +130,10 @@ body {
   }
   .header-nav-lg {
     display: none;
+  }
+  .navbar-brand span {
+      width: 40px;
+      font-size: 10px;
   }
 }
 @media screen and (min-width: 750px) {
@@ -155,6 +174,7 @@ body {
 }
 .shadow-hover {
   transition: all .6s ease;
+  padding-inline: 10px;
 }
 .shadow-hover:hover {
   box-shadow: 0 0 10px 3px rgba(0,0,0,.1) !important;
@@ -185,15 +205,12 @@ body {
 .box-trainer {
   width: auto;
   height: auto;
-  overflow-x: scroll;
-  justify-content: center;
+  overflow: hidden;
   flex-wrap: wrap;
-  box-shadow: 0 0 10px 1px var(--ac-low);
-  scrollbar-width: none;
 }
 .img-trainer {
-  width: 300px;
-  height: 450px;
+  width: 280px;
+  height: 400px;
   background-size: cover !important;
 }
 @media screen and (max-width: 750px) {
@@ -208,6 +225,7 @@ body {
   .box-trainer {
     width: 100%;
     margin: 10px;
+    justify-content: center;
   }
 }
 @media screen and (min-width: 750px) {
