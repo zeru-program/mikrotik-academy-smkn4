@@ -1,15 +1,23 @@
 import { useState, useEffect } from 'react';
 
 const GetCms = () => {
-    const [cms, setCms] = useState([]);
+    const [dataCms, setDataCms] = useState([]);
     const db = import.meta.env.VITE_DB;
+
     useEffect(() => {
         fetch(db + "cms.json")
             .then((res) => res.json())
-            .then((data) => setCms(Object.values(data)));
+            .then((data) => {
+                // Convert CMS object to array with keys for access
+                const cmsArray = Object.entries(data).map(([key, value]) => ({
+                    id: key,
+                    ...value
+                }));
+                setDataCms(cmsArray);
+            });
     }, []);
 
-    return { cms, setCms };
-}
+    return { dataCms, setDataCms };
+};
 
 export default GetCms;
