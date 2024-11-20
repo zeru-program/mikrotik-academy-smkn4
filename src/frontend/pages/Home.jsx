@@ -3,6 +3,7 @@ import Nav from "../components/Nav"
 import Footer from "../components/Footer"
 import HeaderNavbarLarge from "../components/HeaderNavbarLarge"
 import GetCms from "../../backend/GetCms";
+import GetTrainer from "../../backend/GetTrainer";
 
 const HeroHeader = () => {
   return (
@@ -154,22 +155,53 @@ const Partner = () => {
 
 const TrainerSection = () => {
   const { dataCms } = GetCms()
+  const { dataTrainer } = GetTrainer()
+  console.log(dataTrainer)
   return (
     <section className="w-100 h-auto shadow-hover bg-sc mb25 shadow-sm py-3 d-flex flex-wrap">
       <div className="container-fluid">
-        <h1>{dataCms.find((item) => item.id === "t1")?.content  || "Loading.."}</h1>
+        <h1>
+          {dataCms.find((item) => item.id === "t1")?.content || "Loading.."}
+        </h1>
         <div className="position-relative con-hr w-100">
           <div className="hr-ac position-absolute" />
           <hr className="w-100" />
         </div>
         <div className="w-100 gap-3 mt-2 d-flex flex-wrap">
-          <div className="box-trainer p-4 d-flex gap-3">
-            <div className="img-trainer text-light position-relative shadow-sm" style={{background: "linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,1)), url('/images/trainer/trainer-1.jpg') center center"}}>
-              <span>Yunita Indrasari - yunitaindrasarii@gmail.com</span>
-            </div>
-            <img src="/images/trainer/MTCNA-YUNITA.jpg" className="shadow-sm img-trainer" alt="Foto Orang" />
-            <img src="/images/trainer/MTCRE-YUNITA.jpg" className="shadow-sm img-trainer" alt="Foto Orang" />
-          </div>
+          {Array.isArray(dataTrainer) &&
+            dataTrainer.map((tr, index) => (
+              <div className="box-trainer p-4 d-flex gap-3" key={index}>
+                <div
+                  className="img-trainer text-light position-relative shadow-sm"
+                  style={{
+                    background: `linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,1)), url('${tr.image}') center center`,
+                    backgroundSize: "cover",
+                  }}
+                >
+                  <span>
+                    {tr.name} - {tr.email}
+                  </span>
+                </div>
+
+                {/* Render gambar sertifikat berdasarkan nilai */}
+                <div className="d-flex flex-wrap gap-2">
+                  {tr.sertifikat1 && (
+                    <img
+                      src={tr.sertifikat1}
+                      className="shadow-sm img-trainer"
+                      alt="Sertifikat 1"
+                    />
+                  )}
+                  {tr.sertifikat2 && (
+                    <img
+                      src={tr.sertifikat2}
+                      className="shadow-sm img-trainer"
+                      alt="Sertifikat 2"
+                    />
+                  )}
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </section>
