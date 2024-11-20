@@ -205,6 +205,10 @@ body {
   .box-gk-2 {
     width: 100%;
   }
+  .box-trainer {
+    width: 100%;
+    margin: 10px;
+  }
 }
 @media screen and (min-width: 750px) {
   .hero-home {

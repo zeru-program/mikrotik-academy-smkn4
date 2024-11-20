@@ -156,7 +156,6 @@ const Partner = () => {
 const TrainerSection = () => {
   const { dataCms } = GetCms()
   const { dataTrainer } = GetTrainer()
-  console.log(dataTrainer)
   return (
     <section className="w-100 h-auto shadow-hover bg-sc mb25 shadow-sm py-3 d-flex flex-wrap">
       <div className="container-fluid">
@@ -184,7 +183,7 @@ const TrainerSection = () => {
                 </div>
 
                 {/* Render gambar sertifikat berdasarkan nilai */}
-                <div className="d-flex flex-wrap gap-2">
+                <div className="d-flex justify-content-center flex-wrap gap-2">
                   {tr.sertifikat1 && (
                     <img
                       src={tr.sertifikat1}
