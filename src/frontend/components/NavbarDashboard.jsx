@@ -3,15 +3,7 @@ const NavbarDashboard = ({ toggleNav, isSearchVisible, toggleSearch, isDarkMode,
   return (
     <nav>
       <i className="bx bx-menu" onClick={toggleNav} /> {/* Panggil toggleNav */}
-      <a href="#" className="nav-link">Categories</a>
-      <form action="#" className={isSearchVisible ? "show" : ""}>
-        <div className="form-input">
-          <input type="search" placeholder="Search..." />
-          <button type="button" onClick={toggleSearch} className="search-btn">
-            <i className={`bx ${isSearchVisible ? "bx-x" : "bx-search"}`} />
-          </button>
-        </div>
-      </form>
+      
       <input
         type="checkbox"
         id="switch-mode"
@@ -20,11 +12,11 @@ const NavbarDashboard = ({ toggleNav, isSearchVisible, toggleSearch, isDarkMode,
         hidden
       />
       <label htmlFor="switch-mode" className="switch-mode" />
-      <a href="#" className="notification">
+      <a href="#" className="notification position-fixed" style={{right: "90px", top: "15px"}}>
         <i className="bx bxs-bell" />
         <span className="num">8</span>
       </a>
-      <a href="#" className="profile">
+      <a href="/dashboard" className="profile position-fixed" style={{right: "20px", top: "10px"}} >
         <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="Profile" />
       </a>
     </nav>

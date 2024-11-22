@@ -14,18 +14,18 @@ const HeroHeader = () => {
   const { dataCmsImg } = GetCmsImg();
   const [cover, setCover] = useState("")
   useEffect(() => {
-      setTimeout(() => {
-          setCover("cover")
-      }, 2000)
+    setTimeout(() => {
+      setCover("cover")
+    }, 2000)
   }, [])
-   // Safely retrieve the image URL
+  // Safely retrieve the image URL
   return (
     <header
       className="w-100 d-flex justify-content-center align-items-center hero-home"
       data-aos="fade-in"
       data-aos-delay="2300"
       style={{
-        background: `url(${dataCmsImg.find((item) => item.name === "hero_banner" && item.status == true)?.img  || ""}) center center`,
+        background: `url(${dataCmsImg.find((item) => item.name === "hero_banner" && item.status == true)?.img || ""}) center center`,
         backgroundSize: cover,
       }}
     ></header>
@@ -40,16 +40,16 @@ const HomeSection = () => {
     <section className="w-100 shadow-hover bg-sc mb25 box-opening shadow-sm py-3 d-flex flex-wrap" data-aos="fade-up" data-aos-delay="2300">
       <div className="container-fluid">
         <img
-          src={dataCmsImg.find((item) => item.name === "hero_kepsek" && item.status == true)?.img  || ""}
-          style={{pointerEvents: "none"}}
-          className="img-hero-home" 
-          data-aos="zoom-in" 
+          src={dataCmsImg.find((item) => item.name === "hero_kepsek" && item.status == true)?.img || ""}
+          style={{ pointerEvents: "none" }}
+          className="img-hero-home"
+          data-aos="zoom-in"
           data-aos-delay="2500"
           alt="Picture Kepala Sekolah"
         />
       </div>
       <div className="container-fluid mt-2">
-        <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "h1")?.content  || "Sambutan Kepala Sekolah"}</h1>
+        <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "h1")?.content || "Sambutan Kepala Sekolah"}</h1>
         <div className="position-relative con-hr w-100">
           <div className="hr-ac position-absolute" />
           <hr className="w-100" />
@@ -88,7 +88,7 @@ const ProfileSekolah = () => {
       <div className="d-flex flex-column">
         <div className="w-auto shadow-hover bg-sc mb25 box-ps-1 shadow-sm py-3 d-flex flex-column">
           <div className="w-100 justify-content-center d-flex">
-            <img data-aos="zoom-in" data-aos-delay="500" src={dataCmsImg.find((item) => item.name === "profile_mikrotik_academy" && item.status == true)?.img  || ""} className="" style={{width: "90%"}} alt="logo mikrotik" />
+            <img data-aos="zoom-in" data-aos-delay="500" src={dataCmsImg.find((item) => item.name === "profile_mikrotik_academy" && item.status == true)?.img || ""} className="" style={{ width: "90%" }} alt="logo mikrotik" />
           </div>
           <div className="container-fluid mt-3">
             <div className="position-relative con-hr w-100">
@@ -96,26 +96,26 @@ const ProfileSekolah = () => {
               <hr className="w-100" />
             </div>
             <p data-aos="fade-up" data-aos-delay="500">
-             {dataCms.find((item) => item.id === "p1")?.content  || "Loading.."}
-            </p>  
+              {dataCms.find((item) => item.id === "p1")?.content || "Loading.."}
+            </p>
           </div>
         </div>
         <div className="w-auto shadow-hover bg-sc mb25 box-ps-2 shadow-sm py-3 d-flex" data-aos="fade-up">
           <div className="container-fluid">
-            <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p2")?.content  || "Loading.."}</h1>
+            <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p2")?.content || "Loading.."}</h1>
             <div className="position-relative con-hr w-100">
               <div className="hr-ac position-absolute" />
               <hr className="w-100" />
             </div>
             <p data-aos="fade-up" data-aos-delay="800">
-              {dataCms.find((item) => item.id === "p3")?.content  || "Loading.."}
+              {dataCms.find((item) => item.id === "p3")?.content || "Loading.."}
             </p>
           </div>
         </div>
       </div>
       <div className="w-auto shadow-hover bg-sc mb-2 box-ps-3 shadow-sm py-3 d-flex" data-aos="fade-up">
         <div className="container-fluid">
-          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p4")?.content  || "Loading.."}</h1>
+          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p4")?.content || "Loading.."}</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
@@ -123,39 +123,51 @@ const ProfileSekolah = () => {
         </div>
       </div>
     </section>
-    )
+  )
 }
 
 const MateriManfaat = () => {
   const { dataCms } = GetCms()
-    return (
+  return (
     <section className="w-100 section-materi-manfaat mb-2 d-grid py-3 gap25" id="materi-manfaat">
       <div data-aos="fade-up" className="bg-sc shadow-hover box-mt-1 shadow-sm py-3 d-flex">
         <div className="container-fluid">
-          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "mm1")?.content  || "Loading.."}</h1>
+          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "mm1")?.content || "Loading.."}</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
           </div>
-          <p data-aos="fade-up" data-aos-delay="800">{dataCms.find((item) => item.id === "mm2")?.content  || "Loading.."}</p>
+          <p data-aos="fade-up" style={{ whiteSpace: "pre-line" }} data-aos-delay="800">
+            MikroTik Academy akan memberikan sertifikasi MTCNA (MikroTik Certified Network Associate) yang menjadi langkah awal bagi peserta training untuk bergabung dalam asosiasi dan sebagai syarat untuk mengambil sertifikasi yang lebih tinggi dari MikroTik.
+          </p>
+
+          <p className="m-0">Materi MTCNA di antaranya:</p>
+          <p className="m-0">1.Introduction to Mikrotik</p>
+          <p className="m-0">2.DHCP</p>
+          <p className="m-0">3.Bridge</p>
+          <p className="m-0">4.Routing</p>
+          <p className="m-0">5.Firewall</p>
+          <p className="m-0">6.Quality of Service</p>
+          <p className="m-0">7.Wireless</p>
+          <p className="m-0">8.Tunnel</p>
         </div>
       </div>
       <div data-aos="fade-up" className="bg-sc shadow-hover box-mt-2 shadow-sm py-3 d-flex">
         <div className="container-fluid">
-          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "mm3")?.content  || "Loading.."}</h1>
+          <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "mm3")?.content || "Loading.."}</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
           </div>
-          <p data-aos="fade-up" data-aos-delay="800">{dataCms.find((item) => item.id === "mm4")?.content  || "Loading.."}</p>
+          <p data-aos="fade-up" data-aos-delay="800">{dataCms.find((item) => item.id === "mm4")?.content || "Loading.."}</p>
         </div>
       </div>
     </section>
-    )
+  )
 }
 
 const Partner = () => {
-    return (
+  return (
     <section className="w-100 bg-sc shadow-hover mb-2 box-partner shadow-sm py-3 d-flex flex-wrap">
       <div className="container-fluid">
         <h1>Partner kami</h1>
@@ -168,7 +180,7 @@ const Partner = () => {
         </div>
       </div>
     </section>
-    )
+  )
 }
 
 const TrainerSection = () => {
@@ -201,20 +213,20 @@ const TrainerSection = () => {
                 </div>
 
                 {/* Render gambar sertifikat berdasarkan nilai */}
-                  {tr.sertifikat1 && (
-                    <img
-                      src={tr.sertifikat1}
-                      className="shadow-sm img-trainer"
-                      alt="Sertifikat 1"
-                    />
-                  )}
-                  {tr.sertifikat2 && (
-                    <img
-                      src={tr.sertifikat2}
-                      className="shadow-sm img-trainer"
-                      alt="Sertifikat 2"
-                    />
-                  )}
+                {tr.sertifikat1 && (
+                  <img
+                    src={tr.sertifikat1}
+                    className="shadow-sm img-trainer"
+                    alt="Sertifikat 1"
+                  />
+                )}
+                {tr.sertifikat2 && (
+                  <img
+                    src={tr.sertifikat2}
+                    className="shadow-sm img-trainer"
+                    alt="Sertifikat 2"
+                  />
+                )}
               </div>
             ))}
         </div>
@@ -224,9 +236,9 @@ const TrainerSection = () => {
 };
 
 const GaleryKomentar = () => {
-    return (
+  return (
     <section className="w-100 section-galery py-3 gap25 d-grid" data-aos="fade-up">
-     <div className="bg-sc shadow-hover box-gk-2 shadow-sm py-3 d-flex">
+      <div className="bg-sc shadow-hover box-gk-2 shadow-sm py-3 d-flex">
         <div className="container-fluid">
           <h1 data-aos="fade-up" data-aos-delay="500">Komentar</h1>
           <div className="position-relative con-hr w-100">
@@ -237,16 +249,16 @@ const GaleryKomentar = () => {
         </div>
       </div>
     </section>
-    )
+  )
 }
 
 const Home = () => {
-    useEffect(() => {
-        AOS.init({
-            duration: 1000,
-            once: true,
-        })
-    }, [])
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    })
+  }, [])
   return (
     <div>
       <BackToTop />
@@ -260,7 +272,7 @@ const Home = () => {
         <MateriManfaat />
         <TrainerSection />
         {/* <Partner /> */}
-        <GaleryKomentar/>
+        <GaleryKomentar />
       </main>
       <Footer />
     </div>

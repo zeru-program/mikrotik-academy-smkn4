@@ -63,29 +63,29 @@ const TableTrainer = () => {
   const [clickCreate, setClickCreate] = useState(false)
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false)
-  
+
   const temporaryEdit = (uniqueId, elem) => {
     if (!infoShown) {
       Swal.fire("Informasi", "Untuk membatalkan pengeditan data silakan reload/refresh halaman.", "info");
       setInfoShown(true);
     }
-        const siblingTd = elem.closest("tr").getElementsByTagName("td");
-        for (let i = 5; i < siblingTd.length - 2; i++) {
-            siblingTd[i].contentEditable = true;
-            siblingTd[i].classList.add("temp-update-class");
-        }
-        elem.classList.add("bg-success")
-        elem.classList.remove("bg-warning")
-        elem.innerHTML = "<i class='bi-floppy2-fill text-light' />";
-        elem.onclick = async () => {
-           var contentId = document.querySelectorAll(".temp-update-class");
-           var success = await UpdateTrainer(
-                uniqueId,
-                contentId[0].textContent,
-                contentId[1].textContent,
-                contentId[2].textContent,
-              );
-              if (success) {
+    const siblingTd = elem.closest("tr").getElementsByTagName("td");
+    for (let i = 5; i < siblingTd.length - 2; i++) {
+      siblingTd[i].contentEditable = true;
+      siblingTd[i].classList.add("temp-update-class");
+    }
+    elem.classList.add("bg-success")
+    elem.classList.remove("bg-warning")
+    elem.innerHTML = "<i class='bi-floppy2-fill text-light' />";
+    elem.onclick = async () => {
+      var contentId = document.querySelectorAll(".temp-update-class");
+      var success = await UpdateTrainer(
+        uniqueId,
+        contentId[0].textContent,
+        contentId[1].textContent,
+        contentId[2].textContent,
+      );
+      if (success) {
         Swal.fire("Success", "Data berhasil di ubah", "success").then(
           (result) => {
             if (result.isConfirmed) {
@@ -96,79 +96,100 @@ const TableTrainer = () => {
       } else {
         Swal.fire("Error", "Gagal menambahkan data", "error");
       }
+    }
+  };
+
+  const temporaryDelete = async (id, urlImg, s1, s2, s3) => {
+    // Show confirmation dialog
+    const result = await Swal.fire({
+      title: "Anda yakin?",
+      text: "Anda akan menghapus Data Trainer yang anda pilih",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    // Check if the action was canceled
+    if (result.isDismissed) {
+      return false;
+    }
+
+    try {
+      // Prepare file paths by stripping the base URL
+      const filePathImage = urlImg.replace(
+        `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
+      );
+      const filePathS1 = s1.replace(
+        `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
+      );
+
+      // Remove secondary files if provided
+      if (s2) {
+        const filePathS2 = s2.replace(
+          `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
+        );
+        const { error: errorS2 } = await supabase.storage
+          .from("trainer")
+          .remove([filePathS2]);
+
+        if (errorS2) {
+          throw new Error('Gagal menghapus file S2');
         }
-    };
-        
-const temporaryDelete = async (id, urlImg, s1, s2, s3) => {
-  // Show confirmation dialog
-  const result = await Swal.fire({
-    title: "Anda yakin?",
-    text: "Anda akan menghapus Data Trainer yang anda pilih",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  });
+      } else if (s3) {
+        const filePathS3 = s3.replace(
+          `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
+        );
+        const { error: errorS3 } = await supabase.storage
+          .from("trainer")
+          .remove([filePathS3]);
 
-  // Check if the action was canceled
-  if (result.isDismissed) {
-    return false;
-  }
-
-  try {
-    // Prepare file paths by stripping the base URL
-    const filePathImage = urlImg.replace(
-      `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
-    );
-    const filePathS1 = s1.replace(
-      `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
-    );
-    
-    // Remove secondary files if provided
-    if (s2) {
-      const filePathS2 = s2.replace(
-        `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
-      );
-      const { error: errorS2 } = await supabase.storage
-        .from("trainer")
-        .remove([filePathS2]);
-
-      if (errorS2) {
-        throw new Error('Gagal menghapus file S2');
+        if (errorS3) {
+          throw new Error('Gagal menghapus file S3');
+        }
       }
-    } else if (s3) {
-      const filePathS3 = s3.replace(
-        `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/trainer/`, ""
-      );
-      const { error: errorS3 } = await supabase.storage
+
+      // Remove the primary image
+      const { error: errorImage } = await supabase.storage
         .from("trainer")
-        .remove([filePathS3]);
+        .remove([filePathImage]);
 
-      if (errorS3) {
-        throw new Error('Gagal menghapus file S3');
+      const { error: errorS1 } = await supabase.storage
+        .from("trainer")
+        .remove([filePathS1]);
+
+      if (errorImage) {
+        throw new Error('Gagal menghapus file gambar utama');
+      } else if (errorS1) {
+        throw new Error('Gagal menghapus file gambar s1');
       }
+
+      // Delete trainer data
+      const res = await DeleteTrainer(id);
+      if (res) {
+        Swal.fire("Success", "Data berhasil dihapus", "success").then(
+          (result) => {
+            if (result.isConfirmed) {
+              location.reload();
+            }
+          }
+        );
+      } else {
+        alert("Gagal menghapus data trainer");
+      }
+    } catch (error) {
+      console.error("Error deleting:", error);
+      alert(`Gagal menghapus: ${error.message}`);
     }
+  };
 
-    // Remove the primary image
-    const { error: errorImage } = await supabase.storage
-      .from("trainer")
-      .remove([filePathImage]);
-      
-    const { error: errorS1 } = await supabase.storage
-      .from("trainer")
-      .remove([filePathS1]);
 
-    if (errorImage) {
-      throw new Error('Gagal menghapus file gambar utama');
-    } else if (errorS1) {
-      throw new Error('Gagal menghapus file gambar s1');
-    }
+  const updateStatus = async (id, status) => {
+    var res = await UpdateStatusTrainer(id, status)
 
-    // Delete trainer data
-    const res = await DeleteTrainer(id);
     if (res) {
-      Swal.fire("Success", "Data berhasil dihapus", "success").then(
+      Swal.fire("Success", "Status berhasil diubah", "success").then(
         (result) => {
           if (result.isConfirmed) {
             location.reload();
@@ -176,109 +197,88 @@ const temporaryDelete = async (id, urlImg, s1, s2, s3) => {
         }
       );
     } else {
-      alert("Gagal menghapus data trainer");
+      alert("Gagal menghapus");
     }
-  } catch (error) {
-    console.error("Error deleting:", error);
-    alert(`Gagal menghapus: ${error.message}`);
   }
-};
 
-  
-  const updateStatus = async (id, status) => {
-      var res = await UpdateStatusTrainer(id, status)
-      
-     if (res) {
-       Swal.fire("Success", "Status berhasil diubah", "success").then(
-         (result) => {
-           if (result.isConfirmed) {
-                location.reload();
-             }
-           }
-         );
-       } else {
-          alert("Gagal menghapus");
-       }
-  }
-  
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!sertifikatOne) return alert("Please select an image to upload");
+    if (!sertifikatOne) return alert("Please select an image to upload");
 
-  const bucketName = "trainer";
-  try {
-    setUploading(true);
+    const bucketName = "trainer";
+    try {
+      setUploading(true);
 
-    // Mengatur daftar file untuk diunggah
-    const filesToUpload = [
-      { file: image, name: image.name },
-      { file: sertifikatOne, name: sertifikatOne.name },
-      sertifikatTwo && { file: sertifikatTwo, name: sertifikatTwo.name },
-      sertifikatThree && { file: sertifikatThree, name: sertifikatThree.name },
-    ].filter(Boolean); // Filter nilai null atau undefined
+      // Mengatur daftar file untuk diunggah
+      const filesToUpload = [
+        { file: image, name: image.name },
+        { file: sertifikatOne, name: sertifikatOne.name },
+        sertifikatTwo && { file: sertifikatTwo, name: sertifikatTwo.name },
+        sertifikatThree && { file: sertifikatThree, name: sertifikatThree.name },
+      ].filter(Boolean); // Filter nilai null atau undefined
 
-    // Melakukan upload semua file secara paralel
-    const uploadPromises = filesToUpload.map(({ file, name }) => {
-      return supabase.storage.from(bucketName).upload(name, file, {
-        cacheControl: "3600",
-        upsert: false,
+      // Melakukan upload semua file secara paralel
+      const uploadPromises = filesToUpload.map(({ file, name }) => {
+        return supabase.storage.from(bucketName).upload(name, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
       });
-    });
 
-    // Menunggu semua upload selesai
-    const results = await Promise.all(uploadPromises);
+      // Menunggu semua upload selesai
+      const results = await Promise.all(uploadPromises);
 
-    // Mengecek apakah ada error
-    const errors = results.filter(({ error }) => error);
-    if (errors.length > 0) {
-      errors.forEach(({ error }) => console.error("Error uploading file:", error.message));
-      return alert("Some files failed to upload. Check the console for details.");
-    }
-
-    // Mengambil public URL untuk semua file yang berhasil diunggah
-    const publicUrls = results.map(({ data }, index) => {
-      if (data) {
-        return `${SUPABASE_URL}/storage/v1/object/public/${bucketName}/${filesToUpload[index].name}`;
+      // Mengecek apakah ada error
+      const errors = results.filter(({ error }) => error);
+      if (errors.length > 0) {
+        errors.forEach(({ error }) => console.error("Error uploading file:", error.message));
+        return alert("Some files failed to upload. Check the console for details.");
       }
-      return "";
-    });
 
-    // Kirim data ke API lain
-    const success = await PostTrainer(name, email, phone, publicUrls[0], publicUrls[1], publicUrls[2], publicUrls[3], status);
-
-    if (success) {
-      Swal.fire(
-        "Success",
-        "Data berhasil ditambahkan, silakan reload halaman",
-        "success"
-      ).then((result) => {
-        if (result.isConfirmed) {
-          location.reload();
+      // Mengambil public URL untuk semua file yang berhasil diunggah
+      const publicUrls = results.map(({ data }, index) => {
+        if (data) {
+          return `${SUPABASE_URL}/storage/v1/object/public/${bucketName}/${filesToUpload[index].name}`;
         }
+        return "";
       });
-    } else {
-      Swal.fire("Error", "Gagal menambahkan data", "error");
+
+      // Kirim data ke API lain
+      const success = await PostTrainer(name, email, phone, publicUrls[0], publicUrls[1], publicUrls[2], publicUrls[3], status);
+
+      if (success) {
+        Swal.fire(
+          "Success",
+          "Data berhasil ditambahkan, silakan reload halaman",
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+          }
+        });
+      } else {
+        Swal.fire("Error", "Gagal menambahkan data", "error");
+      }
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      alert("Error uploading images: " + error.message);
+    } finally {
+      setUploading(false);
     }
-  } catch (error) {
-    console.error("Error uploading images:", error);
-    alert("Error uploading images: " + error.message);
-  } finally {
-    setUploading(false);
-  }
-};
+  };
 
 
   const handleCreate = () => {
-     setClickCreate(!clickCreate)
-   };
+    setClickCreate(!clickCreate)
+  };
 
 
   return (
     <div className="table-data">
-      <div className={`w-100 vh-100 ${clickCreate ? "d-flex" : "d-none"} justify-content-center align-items-center position-fixed top-0 start-0`} style={{background: "rgba(0,0,0,.3)", backdropFilter: "blur (2px)", zIndex: "1000"}}>
-      <form onSubmit={handleSubmit} className="d-flex position-relative justify-content-center container mt-5 py-3 bg-light px-2 rounded-2 flex-column shadow" style={{height:"auto"}}>
-          <i className="bi-x-lg text-danger position-absolute" style={{right: "10px", top: "1px"}} onClick={() => setClickCreate(!clickCreate)} />
+      <div className={`w-100 vh-100 ${clickCreate ? "d-flex" : "d-none"} justify-content-center align-items-center position-fixed top-0 start-0`} style={{ background: "rgba(0,0,0,.3)", backdropFilter: "blur (2px)", zIndex: "1000" }}>
+        <form onSubmit={handleSubmit} className="d-flex position-relative justify-content-center container mt-5 py-3 bg-light px-2 rounded-2 flex-column shadow" style={{ height: "auto" }}>
+          <i className="bi-x-lg text-danger position-absolute" style={{ right: "10px", top: "1px" }} onClick={() => setClickCreate(!clickCreate)} />
           <h1 className="text-center mt-3 mb-3">New trainer</h1>
           <label className="mb-1">Nama lengkap</label>
           <input onInput={(e) => setName(e.target.value)} type="text" value={name} className="form-control mb-2" required placeholder="ketik disini.." />
@@ -296,15 +296,15 @@ const handleSubmit = async (e) => {
           <input onInput={(e) => setSertifikatThree(e.target.files[0])} accept="image/*" type="file" className="form-control mb-2" />
           <label className="mb-1">Status</label>
           <select className="form-control mb-2" onChange={(e) => setStatus(e.target.value)} value={status}>
-           <option value="true">
-            Aktif
-           </option>
-           <option value="false">
-            Tidak aktif
-           </option>
+            <option value="true">
+              Aktif
+            </option>
+            <option value="false">
+              Tidak aktif
+            </option>
           </select>
           <button type="submit" className="btn-download mt-2">{uploading ? "Submitting.." : "Submit"}</button>
-       </form>
+        </form>
       </div>
       <div className="order">
         <div className="head mb-2">
@@ -320,44 +320,44 @@ const handleSubmit = async (e) => {
               <th>Gambar</th>
               <th>Sertifikat 1</th>
               <th>Sertifikat 2</th>
-              <th style={{paddingRight: "5px"}}>Sertifikat 3</th>
-              <th style={{paddingRight: "5px"}}>Nama lengkap</th>
+              <th style={{ paddingRight: "5px" }}>Sertifikat 3</th>
+              <th style={{ paddingRight: "5px" }}>Nama lengkap</th>
               <th>Email</th>
               <th>Nomor Telepon</th>
-              <th style={{paddingRight: "100px"}}>Status</th>
+              <th style={{ paddingRight: "100px" }}>Status</th>
               <th>Option</th>
             </tr>
           </thead>
           <tbody>
-          {Array.isArray(dataTrainer) &&
+            {Array.isArray(dataTrainer) &&
               dataTrainer.map((tr, index) => (
                 <tr>
-                  <td style={{paddingRight:"20px"}}>{index + 1}</td>
-                  <td style={{paddingRight:"20px"}}><img style={{width: "80px",height: "auto"}} src={tr.image} /></td>
-                  <td style={{paddingRight:"20px"}}>
-                   {tr.sertifikat1 ? (
-                   <img style={{width: "80px",height: "auto"}} src={tr.sertifikat1} />
-                   ) : <span className="status pending">X</span>
-                   }
-                   </td>
-                  <td style={{paddingRight:"20px"}}>
-                   {tr.sertifikat2 ? (
-                   <img style={{width: "80px",height: "auto"}} src={tr.sertifikat2} />
-                   ) : <span className="status pending">X</span>
-                   }
-                   </td>
-                   <td style={{paddingRight:"20px"}}>
-                   {tr.sertifikat3 ? (
-                   <img style={{width: "80px",height: "auto"}} src={tr.sertifikat3} />
-                   ) : <span className="status pending">X</span>
-                   }
-                   </td>
-                 <td style={{paddingRight:"20px", textWrap: "nowrap"}}>{tr.name}</td>
-                 <td style={{paddingRight:"20px", textWrap: "nowrap"}}>{tr.email}
-                 </td>
-                 <td style={{paddingRight:"20px", textWrap: "nowrap"}}>{tr.phone}
-                 </td>
-                  <td style={{paddingRight:"20px", textWrap: "nowrap"}}><span className={`status ${tr.status ? "completed" : "pending"}`}>{tr.status ? "aktif" : "Tidak aktif"}</span></td>
+                  <td style={{ paddingRight: "20px" }}>{index + 1}</td>
+                  <td style={{ paddingRight: "20px" }}><img style={{ width: "80px", height: "auto" }} src={tr.image} /></td>
+                  <td style={{ paddingRight: "20px" }}>
+                    {tr.sertifikat1 ? (
+                      <img style={{ width: "80px", height: "auto" }} src={tr.sertifikat1} />
+                    ) : <span className="status pending">X</span>
+                    }
+                  </td>
+                  <td style={{ paddingRight: "20px" }}>
+                    {tr.sertifikat2 ? (
+                      <img style={{ width: "80px", height: "auto" }} src={tr.sertifikat2} />
+                    ) : <span className="status pending">X</span>
+                    }
+                  </td>
+                  <td style={{ paddingRight: "20px" }}>
+                    {tr.sertifikat3 ? (
+                      <img style={{ width: "80px", height: "auto" }} src={tr.sertifikat3} />
+                    ) : <span className="status pending">X</span>
+                    }
+                  </td>
+                  <td style={{ paddingRight: "20px", textWrap: "nowrap" }}>{tr.name}</td>
+                  <td style={{ paddingRight: "20px", textWrap: "nowrap" }}>{tr.email}
+                  </td>
+                  <td style={{ paddingRight: "20px", textWrap: "nowrap" }}>{tr.phone}
+                  </td>
+                  <td style={{ paddingRight: "20px", textWrap: "nowrap" }}><span className={`status ${tr.status ? "completed" : "pending"}`}>{tr.status ? "aktif" : "Tidak aktif"}</span></td>
                   <td className="gap-2 d-flex align-items-center">
                     <button
                       onClick={(e) =>
@@ -411,10 +411,6 @@ const MainSection = () => {
             </li>
           </ul>
         </div>
-        <a href="#" className="btn-download">
-          <i className="bx bxs-cloud-download" />
-          <span className="text">Download PDF</span>
-        </a>
       </div>
       <TableTrainer />
     </main>

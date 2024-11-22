@@ -2,8 +2,47 @@ import React, { useState, useEffect } from "react";
 import SideBar from "../components/SideBar"
 import NavbarDashboard from "../components/NavbarDashboard"
 import "../../Dashboard.css"; 
+import GetAccount from "../../backend/GetAccount";
+import GetTrainer from "../../backend/GetTrainer";
+import GetCms from "../../backend/GetCms";
+import Swal from "sweetalert2";
 
 const MainSection = () => {
+  const { dataAccount } = GetAccount()
+  const { dataTrainer } = GetTrainer()
+  const { dataCms } = GetCms()
+  const [note, setNote] = useState("")
+  useEffect(() => {
+    fetch(import.meta.env.VITE_DB + "note.json")
+    .then(res => res.json())
+    .then(data => {
+      setNote(data.note)
+    })
+  }, [])
+  const saveNote = () => {
+    fetch(import.meta.env.VITE_DB + "note.json", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        note: note
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        Swal.fire(
+          "Success",
+          "Note berhasil disave, silakan reload halaman",
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+          }
+        });
+      }
+    })
+  }
   return (
     <main>
       <div className="head-title">
@@ -19,63 +58,41 @@ const MainSection = () => {
             </li>
           </ul>
         </div>
-        <a href="#" className="btn-download">
-          <i className="bx bxs-cloud-download" />
-          <span className="text">Download PDF</span>
-        </a>
       </div>
       <ul className="box-info">
         <li>
-          <i className="bx bxs-calendar-check" />
+          <i className="bx bx-run" />
           <span className="text">
-            <h3>1020</h3>
-            <p>New Order</p>
+            <h3>{dataTrainer.length}</h3>
+            <p>Trainer</p>
           </span>
         </li>
         <li>
           <i className="bx bxs-group" />
           <span className="text">
-            <h3>2834</h3>
-            <p>Visitors</p>
+            <h3>{dataAccount.length}</h3>
+            <p>Account</p>
           </span>
         </li>
         <li>
           <i className="bx bxs-dollar-circle" />
           <span className="text">
-            <h3>$2543</h3>
-            <p>Total Sales</p>
+            <h3>{dataCms.length}</h3>
+            <p>Total CMS</p>
           </span>
         </li>
       </ul>
       <div className="table-data">
         <div className="todo">
           <div className="head">
-            <h3>Todos</h3>
+            <h3>Notes</h3>
             <i className="bx bx-plus" />
             <i className="bx bx-filter" />
           </div>
-          <ul className="todo-list">
-            <li className="completed">
-              <p>Todo List</p>
-              <i className="bx bx-dots-vertical-rounded" />
-            </li>
-            <li className="completed">
-              <p>Todo List</p>
-              <i className="bx bx-dots-vertical-rounded" />
-            </li>
-            <li className="not-completed">
-              <p>Todo List</p>
-              <i className="bx bx-dots-vertical-rounded" />
-            </li>
-            <li className="completed">
-              <p>Todo List</p>
-              <i className="bx bx-dots-vertical-rounded" />
-            </li>
-            <li className="not-completed">
-              <p>Todo List</p>
-              <i className="bx bx-dots-vertical-rounded" />
-            </li>
-          </ul>
+          <div>
+            <textarea type="text" onInput={(e) => setNote(e.target.value)} value={note} className="form-control" rows={10} />
+          </div>
+          <button onClick={saveNote} className="btn-info mt-3 px-4 btn">Save</button>
         </div>
       </div>
       {/* Add the rest of the content here (box-info, table-data, etc.) */}

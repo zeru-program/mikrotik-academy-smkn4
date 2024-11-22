@@ -7,15 +7,15 @@ const SideBar = ({ activeMenu, setActiveMenu, clickNav }) => {
   const sideActive = clickNav ? "" : "hide"; // Atur className berdasarkan clickNav
   const menuItems = [
     { name: "Dashboard", icon: "bxs-dashboard", href: "/dashboard" },
-    { name: "Cms", icon: "bxs-shopping-bag-alt", href: "/dashboard/cms" },
-    { name: "Trainer", icon: "bxs-doughnut-chart", href: "/dashboard/trainer" },
+    { name: "Cms Management", icon: "bxs-shopping-bag-alt", href: "/dashboard/cms" },
+    { name: "Trainer Management", icon: "bxs-doughnut-chart", href: "/dashboard/trainer" },
     { name: "Account management", icon: "bxs-group", href: "/dashboard/account" },
   ];
   return (
     <section id="sidebar" className={sideActive}>
       <a href="#" className="brand">
         <img src={dataCmsImg.find((item) => item.name === "logo_navbar" && item.status == true)?.img  || ""} className="mx-2" style={{width: "45px"}} />
-        <span className="text-nowrap">smkn4 bogor</span>
+        <span className="text-nowrap">Smkn4 bogor</span>
       </a>
       <ul className="side-menu top">
         {menuItems.map((item, index) => (
@@ -39,7 +39,7 @@ const SideBar = ({ activeMenu, setActiveMenu, clickNav }) => {
           </a>
         </li>
         <li>
-          <a href="#" className="logout">
+          <a href="/logout" className="logout">
             <i className="bx bxs-log-out-circle" />
             <span className="text">Logout</span>
           </a>

@@ -58,7 +58,9 @@ const Nav = () => {
           </ul>
         </div>
         <div className="nav-login-lg position-absolute">
-          <a href="/login">Login</a>
+          {
+            sessionStorage.getItem("hasLogin") ? <a className="text-danger" href="/logout">Logout</a> : <a href="/auth">Login</a> 
+          }
         </div>
       </div>
     </nav>

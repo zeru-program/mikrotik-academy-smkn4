@@ -128,11 +128,12 @@ const TableCmsText = () => {
   return (
     <div className="table-data">
       <div className="order">
-        <div className="head">
+        <div className="head m-0">
           <h3>Manage your content (text)</h3>
           <i className="bx bx-search" />
           <i className="bx bx-filter" />
         </div>
+        <p className="mb-4">Untuk content sambutan sekolah dan kurikulum manfaat tidak bisa diubah, hanya bisa dicode</p>
         <table>
           <thead>
             <tr>
@@ -447,10 +448,6 @@ const MainSection = () => {
             </li>
           </ul>
         </div>
-        <a href="#" className="btn-download">
-          <i className="bx bxs-cloud-download" />
-          <span className="text">Download PDF</span>
-        </a>
       </div>
       <TableCmsText />
       <TableCmsImg />
