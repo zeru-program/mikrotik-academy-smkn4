@@ -1,33 +1,38 @@
+import GetCms from "../../backend/GetCms";
+
 const Footer = () => {
+  const { dataCms } = GetCms()
   return (
     <footer className="mt-5 pt-4 d-flex flex-column">
       <div className="d-flex gap-3 justify-content-center flex-wrap">
         <div className="d-flex container-fluid fc-1 flex-column">
-          <h1 className="fw-bold">Smkn 4 Bogor</h1>
+          <h1 className="fw-bold">
+          {dataCms.find((item) => item.id === "f1")?.content  || "Smkn 4 Bogor"}
+          </h1>
           <p>
-            Jl. Raya Tajur, Kp. Buntar RT.02/RW.08, Kel. Muara sari, Kec. Bogor
-            Selatan, RT.03/RW.08, Muarasari, Kec. Bogor Sel., Kota Bogor, Jawa
-            Barat 16137
+           {dataCms.find((item) => item.id === "f2")?.content  || "Loading.."}
           </p>
         </div>
         <div className="d-flex container-fluid fc-2 flex-column">
-          <h1 className="fw-bold">Sosial Media</h1>
-          <a href="#" className="text-black">
+          <h1 className="fw-bold">
+            {dataCms.find((item) => item.id === "f3")?.content  || "Loading.."}
+          </h1>
+          <a href={dataCms.find((item) => item.id === "f4")?.content  || "Loading.."} className="text-black">
             Youtube
           </a>
-          <a href="#" className="text-black">
+          <a href={dataCms.find((item) => item.id === "f5")?.content  || "Loading.."} className="text-black">
             Instagram
           </a>
-          <a href="#" className="text-black">
+          <a href={dataCms.find((item) => item.id === "f6")?.content  || "Loading.."} className="text-black">
             Twitter
           </a>
-          <a href="#" className="text-black">
+          <a href={dataCms.find((item) => item.id === "f7")?.content  || "Loading.."} className="text-black">
             Facebook
           </a>
-          <a href="#" className="text-black">
+          <a href={dataCms.find((item) => item.id === "f8")?.content  || "Loading.."} className="text-black">
             TikTok
           </a>
-          <a href="#" className="text-black">
+          <a href={dataCms.find((item) => item.id === "f9")?.content  || "Loading.."} className="text-black">
             Website
           </a>
         </div>
@@ -45,7 +50,9 @@ const Footer = () => {
       </div>
       <div className="w-100 container-fluid mt-3 pb-2 text-secondary d-flex flex-column justify-content-center align-items-center">
         <hr className="container-fluid" />
-        <p>© COPYRIGHT 2024 - 2025 SMKN4 BOGOR</p>
+        <p>
+        {dataCms.find((item) => item.id === "f10")?.content  || "Loading.."}
+        </p>
       </div>
     </footer>
   );

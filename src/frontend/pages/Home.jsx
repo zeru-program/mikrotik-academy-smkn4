@@ -5,34 +5,43 @@ import BackToTop from "../components/BackToTop"
 import Splash from "../components/Splash"
 import HeaderNavbarLarge from "../components/HeaderNavbarLarge"
 import GetCms from "../../backend/GetCms";
+import GetCmsImg from "../../backend/GetCmsImg";
 import GetTrainer from "../../backend/GetTrainer";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const HeroHeader = () => {
+  const { dataCmsImg } = GetCmsImg();
+  const [cover, setCover] = useState("")
+  useEffect(() => {
+      setTimeout(() => {
+          setCover("cover")
+      }, 2000)
+  }, [])
+   // Safely retrieve the image URL
   return (
     <header
       className="w-100 d-flex justify-content-center align-items-center hero-home"
       data-aos="fade-in"
       data-aos-delay="2300"
       style={{
-        background:
-          "url('https://mikrotik.smkdp1jkt.sch.id/wp-content/uploads/2018/09/MIKROTIK-AKADEMI-2-768x392.jpg') center center",
-        backgroundSize: "cover",
+        background: `url(${dataCmsImg.find((item) => item.name === "hero_banner" && item.status == true)?.img  || ""}) center center`,
+        backgroundSize: cover,
       }}
-    >
-    </header>
+    ></header>
   );
 };
 
 // Section Components
 const HomeSection = () => {
+  const { dataCmsImg } = GetCmsImg();
   const { dataCms } = GetCms()
   return (
     <section className="w-100 shadow-hover bg-sc mb25 box-opening shadow-sm py-3 d-flex flex-wrap" data-aos="fade-up" data-aos-delay="2300">
       <div className="container-fluid">
         <img
-          src="/images/kepala_sekolah.jpg"
+          src={dataCmsImg.find((item) => item.name === "hero_kepsek" && item.status == true)?.img  || ""}
+          style={{pointerEvents: "none"}}
           className="img-hero-home" 
           data-aos="zoom-in" 
           data-aos-delay="2500"
@@ -72,13 +81,14 @@ const HomeSection = () => {
 };
 
 const ProfileSekolah = () => {
+  const { dataCmsImg } = GetCmsImg();
   const { dataCms } = GetCms()
   return (
     <section className="w-100 p-0 section-profile-sekolah gap-lg-25 mb-lg-2 d-grid" data-aos="fade-up" id="profile-sekolah">
       <div className="d-flex flex-column">
         <div className="w-auto shadow-hover bg-sc mb25 box-ps-1 shadow-sm py-3 d-flex flex-column">
           <div className="w-100 justify-content-center d-flex">
-            <img data-aos="zoom-in" data-aos-delay="500" src="/images/logo-mikrotik3.png" className="" style={{width: "90%"}} alt="logo mikrotik" />
+            <img data-aos="zoom-in" data-aos-delay="500" src={dataCmsImg.find((item) => item.name === "profile_mikrotik_academy" && item.status == true)?.img  || ""} className="" style={{width: "90%"}} alt="logo mikrotik" />
           </div>
           <div className="container-fluid mt-3">
             <div className="position-relative con-hr w-100">
@@ -176,7 +186,7 @@ const TrainerSection = () => {
         </div>
         <div className="w-100 gap-3 mt-2 d-flex flex-wrap">
           {Array.isArray(dataTrainer) &&
-            dataTrainer.map((tr, index) => (
+            dataTrainer.map((tr, index) => tr.status && (
               <div className="box-trainer py-3 d-flex gap-3" key={index} data-aos="fade-up" data-aos-delay="800">
                 <div
                   className="img-trainer text-light position-relative shadow-sm"

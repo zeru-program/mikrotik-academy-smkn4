@@ -1,19 +1,20 @@
 import { useLocation } from "react-router-dom";
+import GetCmsImg from "../../backend/GetCmsImg";
 
 const SideBar = ({ activeMenu, setActiveMenu, clickNav }) => {
+  const { dataCmsImg } = GetCmsImg();
   const loc = useLocation()
   const sideActive = clickNav ? "" : "hide"; // Atur className berdasarkan clickNav
   const menuItems = [
     { name: "Dashboard", icon: "bxs-dashboard", href: "/dashboard" },
     { name: "Cms", icon: "bxs-shopping-bag-alt", href: "/dashboard/cms" },
-    { name: "Analytics", icon: "bxs-doughnut-chart", href: "/dashboard/a" },
-    { name: "Message", icon: "bxs-message-dots", href: "/dashboard/b" },
-    { name: "Team", icon: "bxs-group", href: "/dashboard/c" },
+    { name: "Trainer", icon: "bxs-doughnut-chart", href: "/dashboard/trainer" },
+    { name: "Account management", icon: "bxs-group", href: "/dashboard/account" },
   ];
   return (
     <section id="sidebar" className={sideActive}>
       <a href="#" className="brand">
-        <img src="/images/logo-mikrotik1.jpg" className="mx-2" style={{width: "45px"}} />
+        <img src={dataCmsImg.find((item) => item.name === "logo_navbar" && item.status == true)?.img  || ""} className="mx-2" style={{width: "45px"}} />
         <span className="text-nowrap">smkn4 bogor</span>
       </a>
       <ul className="side-menu top">
@@ -32,9 +33,9 @@ const SideBar = ({ activeMenu, setActiveMenu, clickNav }) => {
       </ul>
       <ul className="side-menu">
         <li>
-          <a href="#">
-            <i className="bx bxs-cog" />
-            <span className="text">Settings</span>
+          <a href="/">
+            <i className="bx bxs-home" />
+            <span className="text">Home</span>
           </a>
         </li>
         <li>

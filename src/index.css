@@ -40,7 +40,9 @@ body {
   background: var(--pm) !important;
 }
 
-
+img {
+    pointer-events: none;
+}
 .bg-pm {
   background: var(--pm);
 }

@@ -8,11 +8,16 @@ const GetTrainer = () => {
         fetch(db + "trainer.json")
             .then((res) => res.json())
             .then((data) => {
-                setDataTrainer(Object.values(data));
+                // Convert CMS object to array with keys for access
+                const trainer = Object.entries(data).map(([key, value]) => ({
+                    key: key,
+                    ...value
+                }));
+                setDataTrainer(trainer);
             });
     }, []);
 
-    return { dataTrainer, setDataTrainer };
+    return { dataTrainer,setDataTrainer };
 };
 
 export default GetTrainer;

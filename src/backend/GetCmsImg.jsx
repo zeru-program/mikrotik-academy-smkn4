@@ -8,9 +8,10 @@ const GetCmsImg = () => {
         fetch(db + "cms_img.json")
             .then((res) => res.json())
             .then((data) => {
+                // Convert nested data to flat structure
                 const cmsArray = Object.entries(data).map(([key, value]) => ({
                     id: key,
-                    ...value
+                    ...value // Include other top-level properties if needed
                 }));
                 setDataCmsImg(cmsArray);
             });

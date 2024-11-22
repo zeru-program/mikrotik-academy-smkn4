@@ -1,15 +1,17 @@
 import React from "react"
+import GetCmsImg from "../../backend/GetCmsImg";
 
 const Nav = () => {
+  const { dataCmsImg } = GetCmsImg();
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid position-relative">
-        <a className="navbar-brand align-items-center gap-3" href="/">
+        <button className="navbar-brand align-items-center border-0 bg-transparent  gap-3" onClick={() => window.location.href = "/"}>
           <img
-            src="/images/logo-mikrotik1.jpg"
+            src={dataCmsImg.find((item) => item.name === "logo_navbar" && item.status == true)?.img  || ""}
             alt="Logo"
           />
-        </a>
+        </button>
         <button
           className="navbar-toggler"
           type="button"

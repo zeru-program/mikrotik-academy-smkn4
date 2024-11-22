@@ -352,7 +352,7 @@ body {
 	color: var(--blue);
 	pointer-events: unset;
 }
-#content main .head-title .btn-download {
+.btn-download {
 	height: 36px;
 	padding: 0 16px;
 	border-radius: 36px;
@@ -360,6 +360,7 @@ body {
 	color: var(--light);
 	display: flex;
 	justify-content: center;
+	border: 0;
 	align-items: center;
 	grid-gap: 10px;
 	font-weight: 500;
@@ -484,7 +485,7 @@ body {
 	background: var(--grey);
 }
 #content main .table-data .order table tr td .status {
-	font-size: 10px;
+	font-size: 15px;
 	padding: 6px 16px;
 	color: var(--light);
 	border-radius: 20px;

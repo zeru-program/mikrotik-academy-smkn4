@@ -1,16 +1,18 @@
+import GetCmsImg from "../../backend/GetCmsImg";
 
 const HeaderNavbarLarge = () => {
+  const { dataCmsImg } = GetCmsImg();
   return (
     <header className="w-100 align-items-center header-nav-lg">
-      <a
-        className="d-flex gap-2 align-items-center container-fluid mt-3 mx-3"
-        href="/"
+      <button
+        className="d-flex gap-2 align-items-center border-0 bg-transparent container-fluid mt-3 mx-3"
+        onClick={() => window.location.href = "/"}
       >
         <img
-          src="/images/logo-mikrotik1.jpg"
+          src={dataCmsImg.find((item) => item.name === "logo_navbar" && item.status == true)?.img  || ""}
           alt="SMKN 4 BOGOR Logo"
         />
-      </a>
+      </button>
     </header>
   );
 };

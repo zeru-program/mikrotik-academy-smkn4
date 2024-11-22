@@ -8,11 +8,16 @@ import UpdateCmsImg from "../../backend/UpdateCmsImg";
 import UpdateStatusCms from "../../backend/UpdateStatusCms";
 import DeleteCms from "../../backend/DeleteCms";
 import DeleteCmsImg from "../../backend/DeleteCmsImg";
+import PostCmsImg from "../../backend/PostCmsImg";
 import "../../Dashboard.css";
 import Swal from 'sweetalert2'
+import { createClient } from "@supabase/supabase-js"
 const db = import.meta.env.VITE_DB;
 
-
+// supabase configuration
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY;
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 const Todo = () => (
   <div className="todo">
@@ -49,7 +54,7 @@ const Todo = () => (
 const TableCmsText = () => {
   const { dataCms } = GetCms();
   const [cmsText, setCmsText] = useState([]);
-    const [infoShown, setInfoShown] = useState(false);
+  const [infoShown, setInfoShown] = useState(false);
   const temporaryEditCms = (uniqueId, elem) => {
     if (!infoShown) {
       Swal.fire("Informasi", "Untuk membatalkan pengeditan data silakan reload/refresh halaman.", "info");
@@ -85,7 +90,7 @@ const TableCmsText = () => {
       }
         }
     };
-    const temporaryDeleteCms = async (id) => {
+  const temporaryDeleteCms = async (id) => {
     // Show confirmation dialog
     const result = await Swal.fire({
       title: "Anda yakin?",
@@ -167,7 +172,6 @@ const TableCmsText = () => {
           </tbody>
         </table>
       </div>
-      <TableCmsImg />
     </div>
   );
 };
@@ -175,11 +179,17 @@ const TableCmsText = () => {
 const TableCmsImg = () => {
   const { dataCmsImg } = GetCmsImg();
   const [infoShown, setInfoShown] = useState(false);
+  const [name, setName] = useState("");
+  const [status, setStatus] = useState("true");
+  const [petugas, setPetugas] = useState("");
+  const [clickCreate, setClickCreate] = useState(false)
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false)
   
   const temporaryEditCms = (uniqueId, elem) => {
     if (!infoShown) {
       Swal.fire("Informasi", "Untuk membatalkan pengeditan data silakan reload/refresh halaman.", "info");
-      setInfoShown(true); // Set infoShown to true to prevent future alerts
+      setInfoShown(true);
     }
         const siblingTd = elem.closest("tr").getElementsByTagName("td");
         for (let i = 2; i < siblingTd.length - 2; i++) {
@@ -209,8 +219,8 @@ const TableCmsImg = () => {
       }
         }
     };
-    
-  const temporaryDeleteCms = async (id) => {
+        
+  const temporaryDeleteCms = async (id, urlImg) => {
     // Show confirmation dialog
     const result = await Swal.fire({
       title: "Anda yakin?",
@@ -227,6 +237,16 @@ const TableCmsImg = () => {
       return false;
     } else {
       try {
+          const filePath = urlImg.replace(
+          `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/cms/`,
+          ""
+        );
+  
+        // Hapus file dari storage Supabase
+        const { data, error } = await supabase.storage
+          .from("cms")
+          .remove([filePath]); 
+          
         const res = await DeleteCmsImg(id);
         if (res) {
           Swal.fire("Success", "Data berhasil dihapus", "success").then(
@@ -261,22 +281,104 @@ const TableCmsImg = () => {
           alert("Gagal menghapus");
        }
   }
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!image) return alert("Please select an image to upload");
+    const extension = image.name.split('.').pop(); 
+    const fileName = image.name;
+    const bucketName = "cms"; 
+
+    try {
+      setUploading(true);
+
+
+      // Upload image to Supabase storage
+      const { data, error } = await supabase.storage
+        .from(bucketName)
+        .upload(fileName, image, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        console.error("Error uploading image:", error.message);
+        alert("Error uploading image: " + error.message);
+      } else {
+        // Construct the public URL
+        const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${bucketName}/${fileName}`;
+
+        const success = await PostCmsImg(name, publicUrl, petugas, status)
+
+        if (success) {
+          Swal.fire(
+            "Success",
+            "Data berhasil ditambahkan, silakan reload halaman",
+            "success"
+          ).then((result) => {
+            if (result.isConfirmed) {
+              location.reload();
+            }
+          });
+        } else {
+          Swal.fire("Error", "Gagal menambahkan data", "error");
+        }
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image : " + error);
+    } finally {
+      location.reload()
+      setUploading(false);
+    }
+  };
+
+  const handleCreate = () => {
+     setClickCreate(!clickCreate)
+   };
+
+
   return (
     <div className="table-data">
+      <div className={`w-100 vh-100 ${clickCreate ? "d-flex" : "d-none"} justify-content-center align-items-center position-fixed top-0 start-0`} style={{background: "rgba(0,0,0,.3)", backdropFilter: "blur (2px)", zIndex: "5000"}}>
+      <form onSubmit={handleSubmit} className="d-flex position-relative justify-content-center container py-3 bg-light px-2 rounded-2 flex-column shadow" style={{height:"auto"}}>
+          <i className="bi-x-lg text-danger position-absolute" style={{right: "10px", top: "1px"}} onClick={() => setClickCreate(!clickCreate)} />
+          <h1 className="text-center mt-3 mb-3">Create new cms image</h1>
+          <label className="mb-1">Cms Name</label>
+          <input id="cmsNameInput" onInput={(e) => setName(e.target.value)} type="text" value={name} className="form-control mb-2" required placeholder="ketik disini.." />
+          <label className="mb-1">Image</label>
+          <input id="imageInput" onInput={(e) => setImage(e.target.files[0])} accept="image/*" type="file" className="form-control mb-2" required />
+          <label className="mb-1">Petugas</label>
+          <input id="petugasInput" onInput={(e) => setPetugas(e.target.value)} value={petugas} type="text" className="form-control mb-2" required placeholder="ketik disini.." />
+          <label className="mb-1">Status</label>
+          <select className="form-control mb-2" onChange={(e) => setStatus(e.target.value)} value={status}>
+           <option value="true">
+            Aktif
+           </option>
+           <option value="false">
+            Tidak aktif
+           </option>
+          </select>
+          <button type="submit" className="btn-download mt-2">{uploading ? "Submitting.." : "Submit"}</button>
+       </form>
+      </div>
       <div className="order">
-        <div className="head">
+        <div className="head mb-2">
           <h3>Manage your content (image)</h3>
           <i className="bx bx-search" />
           <i className="bx bx-filter" />
         </div>
-        <table>
+        <button onClick={handleCreate} className="btn-download" style={{}}>Create new</button>
+        <table className="mt-3">
           <thead>
             <tr>
               <th className="">No</th>
               <th>Image</th>
-              <th>Cms name</th>
-              <th>Url</th>
-              <th style={{paddingRight: "100px"}}>Statuss </th>
+              <th style={{paddingRight: "5px"}}>Cms name</th>
+              <th>Url Image</th>
+              <th style={{paddingRight: "100px"}}>Status</th>
+              <th>Created at</th>
+              <th>Created by</th>
               <th>Option</th>
             </tr>
           </thead>
@@ -289,15 +391,9 @@ const TableCmsImg = () => {
                   <td style={{paddingRight:"20px"}}>{cms.name}</td>
                   <td style={{paddingRight:"20px"}}>{cms.img}</td>
                   <td style={{paddingRight:"20px"}}><span className={`status ${cms.status ? "completed" : "pending"}`}>{cms.status ? "aktif" : "Tidak aktif"}</span></td>
+                  <td style={{paddingRight:"20px"}}>{cms.created_at}</td>
+                  <td style={{paddingRight:"20px"}}>{cms.created_by}</td>
                   <td className="gap-2 d-flex">
-                    <button
-                      onClick={(e) =>
-                        temporaryEditCms(cms.id, e.currentTarget)
-                      }
-                      className="btn btn-warning status"
-                    >
-                      <i className="bi-pencil text-dark" />
-                    </button>
                     <button
                       onClick={(e) =>
                         updateStatus(cms.id, !cms.status)
@@ -307,7 +403,15 @@ const TableCmsImg = () => {
                       <i className={`bi-${cms.status ? "toggle-on" : "toggle-off"} text-light`} />
                     </button>
                     <button
-                      onClick={(e) => temporaryDeleteCms(cms.id)}
+                      onClick={(e) =>
+                        temporaryEditCms(cms.id, e.currentTarget)
+                      }
+                      className="btn btn-warning status"
+                    >
+                      <i className="bi-pencil text-dark" />
+                    </button>
+                    <button
+                      onClick={(e) => temporaryDeleteCms(cms.id, cms.img)}
                       className="btn btn-danger status"
                     >
                       <i className="bi-trash text-light" />
@@ -349,6 +453,7 @@ const MainSection = () => {
         </a>
       </div>
       <TableCmsText />
+      <TableCmsImg />
     </main>
   );
 };
