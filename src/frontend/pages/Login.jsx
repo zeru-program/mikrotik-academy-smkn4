@@ -17,7 +17,7 @@ const Login = () => {
            <select className="mb-4 form-control" type="text" placeHolder="ketik disini.." >
             <option value="admin">Admin</option>
            </select>
-           <button type="submit" className="status mb-2 btn btn-success">Submit</button>
+           <button type="submit" className="status mb-2 btn text-light" style={{background: "#0125FF"}}>Submit</button>
           </form>
         </section>
         </>
