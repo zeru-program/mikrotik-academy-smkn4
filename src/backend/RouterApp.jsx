@@ -6,12 +6,13 @@ import DashboardCms from "../frontend/pages/DashboardCms";
 import Login from "../frontend/pages/Login";
 import DashboardTrainer from "../frontend/pages/DashboardTrainer";
 import DashboardAccount from "../frontend/pages/DashboardAccount";
+import DashboardGalery from "../frontend/pages/DashboardGalery";
 import Logout from '../frontend/pages/Logout';
 
 // Komponen untuk memverifikasi akses
 const PrivateRoute = ({ element, ...rest }) => {
-  const isLoggedIn = sessionStorage.getItem("hasLogin");
-  const userRole = sessionStorage.getItem("role");
+  const isLoggedIn = localStorage.getItem("hasLogin");
+  const userRole = localStorage.getItem("role");
 
   if (!isLoggedIn || (userRole !== "admin" && userRole !== "developer")) {
     return <Navigate to="/" replace />
@@ -30,6 +31,7 @@ const RouterApp = () => {
         <Route path='/dashboard/cms' element={<PrivateRoute element={<DashboardCms />} />} />
         <Route path='/dashboard/trainer' element={<PrivateRoute element={<DashboardTrainer />} />} />
         <Route path='/dashboard/account' element={<PrivateRoute element={<DashboardAccount />} />} />
+        <Route path='/dashboard/galery' element={<PrivateRoute element={<DashboardGalery />} />} />
         {/* Private Routes */}
         <Route path='/auth' element={<Login />} />
         <Route path='/logout' element={<Logout />} />

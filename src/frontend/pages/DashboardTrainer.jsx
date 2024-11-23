@@ -6,7 +6,6 @@ import UpdateTrainer from "../../backend/UpdateTrainer";
 import UpdateCmsImg from "../../backend/UpdateCmsImg";
 import UpdateStatusTrainer from "../../backend/UpdateStatusTrainer";
 import DeleteTrainer from "../../backend/DeleteTrainer";
-import DeleteCmsImg from "../../backend/DeleteCmsImg";
 import PostTrainer from "../../backend/PostTrainer";
 import "../../Dashboard.css";
 import Swal from 'sweetalert2'
@@ -184,7 +183,6 @@ const TableTrainer = () => {
     }
   };
 
-
   const updateStatus = async (id, status) => {
     var res = await UpdateStatusTrainer(id, status)
 
@@ -233,7 +231,7 @@ const TableTrainer = () => {
       const errors = results.filter(({ error }) => error);
       if (errors.length > 0) {
         errors.forEach(({ error }) => console.error("Error uploading file:", error.message));
-        return alert("Some files failed to upload. Check the console for details.");
+        return alert(error.message);
       }
 
       // Mengambil public URL untuk semua file yang berhasil diunggah

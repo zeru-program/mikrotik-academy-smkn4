@@ -10,6 +10,7 @@ const SideBar = ({ activeMenu, setActiveMenu, clickNav }) => {
     { name: "Cms Management", icon: "bxs-shopping-bag-alt", href: "/dashboard/cms" },
     { name: "Trainer Management", icon: "bxs-doughnut-chart", href: "/dashboard/trainer" },
     { name: "Account management", icon: "bxs-group", href: "/dashboard/account" },
+    { name: "Galery", icon: "bx-image", href: "/dashboard/galery" },
   ];
   return (
     <section id="sidebar" className={sideActive}>

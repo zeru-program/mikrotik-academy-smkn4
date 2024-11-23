@@ -1,5 +1,5 @@
 
-const PostTrainer = async (name, email, image, sertifikat1, sertifikat2, sertifikat3, status) => {
+const PostTrainer = async (name, email, phone, image, sertifikat1, sertifikat2, sertifikat3, status) => {
     const db = import.meta.env.VITE_DB 
     try {
         const response = await fetch(`${db}/trainer.json`, {
@@ -12,6 +12,7 @@ const PostTrainer = async (name, email, image, sertifikat1, sertifikat2, sertifi
                 name,
                 email,
                 image,
+                phone,
                 sertifikat1,
                 sertifikat2,
                 sertifikat3,

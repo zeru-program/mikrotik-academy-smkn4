@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 const db = import.meta.env.VITE_DB;
 
 const Login = () => {
-  if (sessionStorage.getItem("hasLogin")) {
+  if (localStorage.getItem("hasLogin")) {
     window.location.href = "/"
   }
   const [user, setUser] = useState("")
@@ -30,11 +30,11 @@ const Login = () => {
               icon: "success"
             }).then((result) => {
               if (result.isConfirmed) {
-                sessionStorage.setItem("hasLogin", true)
-                sessionStorage.setItem("username", val.username)
-                sessionStorage.setItem("email", val.email)
-                sessionStorage.setItem("role", val.role)
-                sessionStorage.setItem("password", val.password)
+                localStorage.setItem("hasLogin", true)
+                localStorage.setItem("username", val.username)
+                localStorage.setItem("email", val.email)
+                localStorage.setItem("role", val.role)
+                localStorage.setItem("password", val.password)
                 window.location.href = "/?auth=succes"
               }
             })

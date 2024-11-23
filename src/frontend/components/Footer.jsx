@@ -18,21 +18,27 @@ const Footer = () => {
             {dataCms.find((item) => item.id === "f3")?.content  || "Loading.."}
           </h1>
           <a href={dataCms.find((item) => item.id === "f4")?.content  || "Loading.."} className="text-black">
+            <i className="bi bi-youtube" style={{paddingRight: "5px"}} />
             Youtube
           </a>
           <a href={dataCms.find((item) => item.id === "f5")?.content  || "Loading.."} className="text-black">
+            <i className="bi bi-instagram" style={{paddingRight: "5px"}} />
             Instagram
           </a>
           <a href={dataCms.find((item) => item.id === "f6")?.content  || "Loading.."} className="text-black">
+            <i className="bi bi-twitter" style={{paddingRight: "5px"}} />
             Twitter
           </a>
           <a href={dataCms.find((item) => item.id === "f7")?.content  || "Loading.."} className="text-black">
+            <i className="bi bi-facebook" style={{paddingRight: "5px"}} />
             Facebook
           </a>
           <a href={dataCms.find((item) => item.id === "f8")?.content  || "Loading.."} className="text-black">
+            <i className="bi bi-tiktok" style={{paddingRight: "5px"}} />
             TikTok
           </a>
           <a href={dataCms.find((item) => item.id === "f9")?.content  || "Loading.."} className="text-black">
+            <i className="bi bi-globe-americas" style={{paddingRight: "5px"}} />
             Website
           </a>
         </div>

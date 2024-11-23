@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import SideBar from "../components/SideBar";
 import NavbarDashboard from "../components/NavbarDashboard";
-import GetCms from "../../backend/GetCms";
-import GetCmsImg from "../../backend/GetCmsImg";
-import UpdateCms from "../../backend/UpdateCms";
-import UpdateCmsImg from "../../backend/UpdateCmsImg";
-import UpdateStatusCms from "../../backend/UpdateStatusCms";
-import DeleteCms from "../../backend/DeleteCms";
-import DeleteCmsImg from "../../backend/DeleteCmsImg";
-import PostCmsImg from "../../backend/PostCmsImg";
+import GetGalery from "../../backend/GetGalery";
+import UpdateStatusGalery from "../../backend/UpdateStatusCms";
+import DeleteGalery from "../../backend/DeleteGalery";
+import PostGalery from "../../backend/PostGalery";
 import "../../Dashboard.css";
 import Swal from 'sweetalert2'
 import { createClient } from "@supabase/supabase-js"
@@ -51,136 +47,8 @@ const Todo = () => (
   </div>
 );
 
-const TableCmsText = () => {
-  const { dataCms } = GetCms();
-  const [cmsText, setCmsText] = useState([]);
-  const [infoShown, setInfoShown] = useState(false);
-  const temporaryEditCms = (uniqueId, elem) => {
-    if (!infoShown) {
-      Swal.fire("Informasi", "Untuk membatalkan pengeditan data silakan reload/refresh halaman.", "info");
-      setInfoShown(true); // Set infoShown to true to prevent future alerts
-    }
-        const siblingTd = elem.closest("tr").getElementsByTagName("td");
-        for (let i = 1; i < siblingTd.length - 1; i++) {
-            siblingTd[i].contentEditable = true;
-            siblingTd[i].classList.add("temp-update-class");
-        }
-        elem.classList.add("bg-success")
-        elem.classList.remove("bg-warning")
-        elem.innerHTML = "<i class='bi-floppy2-fill text-light' />";
-        
-        elem.onclick = async () => {
-           var contentId = document.querySelectorAll(".temp-update-class");
-           var success = await UpdateCms(
-                uniqueId,
-                contentId[0].textContent,
-                contentId[1].textContent,
-                contentId[2].textContent,
-              );
-              if (success) {
-        Swal.fire("Success", "Data berhasil di ubah", "success").then(
-          (result) => {
-            if (result.isConfirmed) {
-              location.reload();
-            }
-          }
-        );
-      } else {
-        Swal.fire("Error", "Gagal menambahkan data", "error");
-      }
-        }
-    };
-  const temporaryDeleteCms = async (id) => {
-    // Show confirmation dialog
-    const result = await Swal.fire({
-      title: "Anda yakin?",
-      text: "Anda akan menghapus Data CMS yang anda pilih",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    });
-
-    // Check if the action was canceled
-    if (result.isDismissed) {
-      return false;
-    } else {
-      try {
-        const res = await DeleteCms(id);
-        if (res) {
-          Swal.fire("Success", "Data berhasil dihapus", "success").then(
-            (result) => {
-              if (result.isConfirmed) {
-                location.reload();
-              }
-            }
-          );
-        } else {
-          alert("Gagal menghapus");
-        }
-      } catch (error) {
-        console.error("Error deleting:", error);
-        alert("Gagal menghapus");
-      }
-    }
-  };
-  return (
-    <div className="table-data">
-      <div className="order">
-        <div className="head m-0">
-          <h3>Manage your content (text)</h3>
-          <i className="bx bx-search" />
-          <i className="bx bx-filter" />
-        </div>
-        <p className="mb-4">Untuk content sambutan sekolah dan kurikulum materi tidak bisa diubah, hanya bisa dicode</p>
-        <table>
-          <thead>
-            <tr>
-              <th className="">No</th>
-              <th style={{width: "50px"}}>Id</th>
-              <th style={{width: "150px"}}>Cms name</th>
-              <th>Content</th>
-              <th>Option</th>
-            </tr>
-          </thead>
-          <tbody>
-          {Array.isArray(dataCms) &&
-              dataCms
-              .sort((a, b) => a.id.localeCompare(b.id))
-              .map((cms, index) => (
-                <tr>
-                  <td style={{paddingRight:"20px"}}>{index + 1}</td>
-                  <td>{cms.id}</td>
-                  <td className="text-nowrap" style={{paddingRight:"20px"}}>{cms.name}</td>
-                  <td style={{paddingRight:"20px",width: "50%"}}>{cms.content}</td>
-                  <td className="gap-2 d-flex">
-                    <button
-                      onClick={(e) =>
-                        temporaryEditCms(cms.id, e.currentTarget)
-                      }
-                      className="btn btn-warning status"
-                    >
-                      <i className="bi-pencil text-dark" />
-                    </button>
-                    <button
-                      onClick={(e) => temporaryDeleteCms(cms.id)}
-                      className="btn btn-danger status"
-                    >
-                      <i className="bi-trash text-light" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
-const TableCmsImg = () => {
-  const { dataCmsImg } = GetCmsImg();
+const TableGalery = () => {
+  const { dataGalery } = GetGalery();
   const [infoShown, setInfoShown] = useState(false);
   const [name, setName] = useState("");
   const [status, setStatus] = useState("true");
@@ -227,7 +95,7 @@ const TableCmsImg = () => {
     // Show confirmation dialog
     const result = await Swal.fire({
       title: "Anda yakin?",
-      text: "Anda akan menghapus Data CMS yang anda pilih",
+      text: "Anda akan menghapus Gambar Galery yang anda pilih",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -241,16 +109,16 @@ const TableCmsImg = () => {
     } else {
       try {
           const filePath = urlImg.replace(
-          `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/cms/`,
+          `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/galery/`,
           ""
         );
   
         // Hapus file dari storage Supabase
         const { data, error } = await supabase.storage
-          .from("cms")
+          .from("galery")
           .remove([filePath]); 
           
-        const res = await DeleteCmsImg(id);
+        const res = await DeleteGalery(id);
         if (res) {
           Swal.fire("Success", "Data berhasil dihapus", "success").then(
             (result) => {
@@ -270,7 +138,7 @@ const TableCmsImg = () => {
   };
   
   const updateStatus = async (id, status) => {
-      var res = await UpdateStatusCms(id, status)
+      var res = await UpdateStatusGalery(id, status)
       
      if (res) {
        Swal.fire("Success", "Status berhasil diubah", "success").then(
@@ -288,9 +156,8 @@ const TableCmsImg = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!image) return alert("Please select an image to upload");
-    const extension = image.name.split('.').pop(); 
     const fileName = image.name;
-    const bucketName = "cms"; 
+    const bucketName = "galery"; 
 
     try {
       setUploading(true);
@@ -311,12 +178,12 @@ const TableCmsImg = () => {
         // Construct the public URL
         const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${bucketName}/${fileName}`;
 
-        const success = await PostCmsImg(name, publicUrl, petugas, status)
-
+        const success = await PostGalery(publicUrl, status, petugas)
+        
         if (success) {
           Swal.fire(
             "Success",
-            "Data berhasil ditambahkan, silakan reload halaman",
+            "Gambar berhasil ditambahkan, silakan reload halaman",
             "success"
           ).then((result) => {
             if (result.isConfirmed) {
@@ -346,13 +213,11 @@ const TableCmsImg = () => {
       <div className={`w-100 vh-100 ${clickCreate ? "d-flex" : "d-none"} justify-content-center align-items-center position-fixed top-0 start-0`} style={{background: "rgba(0,0,0,.3)", backdropFilter: "blur (2px)", zIndex: "5000"}}>
       <form onSubmit={handleSubmit} className="d-flex position-relative justify-content-center container py-3 bg-light px-2 rounded-2 flex-column shadow" style={{height:"auto"}}>
           <i className="bi-x-lg text-danger position-absolute" style={{right: "10px", top: "1px"}} onClick={() => setClickCreate(!clickCreate)} />
-          <h1 className="text-center mt-3 mb-3">Create new cms image</h1>
-          <label className="mb-1">Cms Name</label>
-          <input id="cmsNameInput" onInput={(e) => setName(e.target.value)} type="text" value={name} className="form-control mb-2" required placeholder="ketik disini.." />
+          <h1 className="text-center mt-3 mb-3">Create new galery</h1>
           <label className="mb-1">Image</label>
           <input id="imageInput" onInput={(e) => setImage(e.target.files[0])} accept="image/*" type="file" className="form-control mb-2" required />
           <label className="mb-1">Petugas</label>
-          <input id="petugasInput" onInput={(e) => setPetugas(e.target.value)} value={petugas} type="text" className="form-control mb-2" required placeholder="ketik disini.." />
+          <input onInput={(e) => setPetugas(e.target.value)} type="text" className="form-control mb-2" required />
           <label className="mb-1">Status</label>
           <select className="form-control mb-2" onChange={(e) => setStatus(e.target.value)} value={status}>
            <option value="true">
@@ -367,7 +232,7 @@ const TableCmsImg = () => {
       </div>
       <div className="order">
         <div className="head mb-2">
-          <h3>Manage your content (image)</h3>
+          <h3>Manage galery</h3>
           <i className="bx bx-search" />
           <i className="bx bx-filter" />
         </div>
@@ -377,46 +242,25 @@ const TableCmsImg = () => {
             <tr>
               <th className="">No</th>
               <th>Image</th>
-              <th style={{paddingRight: "5px"}}>Cms name</th>
-              <th>Url Image</th>
               <th style={{paddingRight: "100px"}}>Status</th>
-              <th>Created at</th>
-              <th>Created by</th>
+              <th style={{paddingRight: "10px"}}>Created at</th>
+              <th style={{paddingRight: "10px"}}>Created by</th>
               <th>Option</th>
             </tr>
           </thead>
           <tbody>
-          {Array.isArray(dataCmsImg) &&
-              dataCmsImg.map((cms, index) => (
+          {Array.isArray(dataGalery) &&
+              dataGalery.map((gr, index) => (
                 <tr>
                   <td style={{paddingRight:"20px"}}>{index + 1}</td>
-                  <td style={{paddingRight:"20px"}}><img style={{width: "100px"}} src={cms.img} /></td>
-                  <td style={{paddingRight:"20px"}}>{cms.name}</td>
-                  <td style={{paddingRight:"20px"}}>{cms.img}</td>
-                  <td style={{paddingRight:"20px"}}><span className={`status ${cms.status ? "completed" : "pending"}`}>{cms.status ? "aktif" : "Tidak aktif"}</span></td>
-                  <td style={{paddingRight:"20px"}}>{cms.created_at}</td>
-                  <td style={{paddingRight:"20px"}}>{cms.created_by}</td>
-                  <td className="gap-2 d-flex">
+                  <td style={{paddingRight:"20px"}}><img style={{width: "100px"}} src={gr.img} /></td>
+                  <td className="text-nowrap" style={{paddingRight:"20px"}}><span className={`status ${gr.status ? "completed" : "pending"}`}>{gr.status ? "aktif" : "Tidak aktif"}</span></td>
+                 <td style={{paddingRight:"20px"}}>{gr.created_at}</td>
+                  <td style={{paddingRight:"20px"}}>{gr.created_by}</td>
+                   <td className="gap-2 d-flex">
                     <button
-                      onClick={(e) =>
-                        updateStatus(cms.id, !cms.status)
-                      }
-                      className={`${cms.status ? "completed" : "pending"} btn status`}
-                    >
-                      <i className={`bi-${cms.status ? "toggle-on" : "toggle-off"} text-light`} />
-                    </button>
-                    <button
-                      onClick={(e) =>
-                        temporaryEditCms(cms.id, e.currentTarget)
-                      }
-                      className="btn btn-warning status"
-                    >
-                      <i className="bi-pencil text-dark" />
-                    </button>
-                    <button
-                      onClick={(e) => temporaryDeleteCms(cms.id, cms.img)}
-                      className="btn btn-danger status"
-                    >
+                      onClick={(e) => temporaryDeleteCms(gr.keyr, gr.img)}
+                      className="btn btn-danger status">
                       <i className="bi-trash text-light" />
                     </button>
                   </td>
@@ -430,34 +274,32 @@ const TableCmsImg = () => {
 };
 
 const MainSection = () => {
-  const dataCms = GetCms();
   return (
     <main>
       <div className="head-title">
         <div className="left">
-          <h1>Dashboard CMS</h1>
+          <h1>Dashboard Galery</h1>
           <ul className="breadcrumb">
             <li>
-              <a href="#">Dashboard</a>
+              <a href="/dashboard">Dashboard</a>
             </li>
             <li>
               <i className="bx bx-chevron-right" />
             </li>
             <li>
               <a className="active" href="#">
-                Cms
+                Galery
               </a>
             </li>
           </ul>
         </div>
       </div>
-      <TableCmsText />
-      <TableCmsImg />
+      <TableGalery />
     </main>
   );
 };
 
-const DashboardCms = () => {
+const DashboardGalery = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Dashboard");
@@ -499,4 +341,4 @@ const DashboardCms = () => {
   );
 };
 
-export default DashboardCms;
+export default DashboardGalery

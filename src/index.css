@@ -176,7 +176,6 @@ img {
 }
 .shadow-hover {
   transition: all .6s ease;
-  padding-inline: 10px;
 }
 .shadow-hover:hover {
   box-shadow: 0 0 10px 3px rgba(0,0,0,.1) !important;
@@ -215,10 +214,38 @@ img {
   height: 400px;
   background-size: cover !important;
 }
+.box-manfaat {
+    width: 200px;
+    height: auto;
+    background: white;
+    flex-shrink: 0;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.box-manfaat h1 {
+    font-size: 1.5em;
+}
+.box-manfaat p {
+    font-size: 13px;
+}
+.img-galery {
+    width: 100%;
+    object-fit: cover;
+}
 @media screen and (max-width: 750px) {
   .box-mt-1,
   .box-mt-2 {
     width: 100%;
+  }
+  .img-hero-home {
+      width: 100%;
+  }
+  .frame-yt {
+      margin-top: 10px;
+      width: 100%;
   }
   .box-gk-1,
   .box-gk-2 {
@@ -229,10 +256,28 @@ img {
     margin: 10px;
     justify-content: center;
   }
+  .box-manfaat {
+      width: 100%;
+  }
+  .con-galery {
+      flex-direction: row !important;
+      overflow-x: scroll;
+  }
 }
 @media screen and (min-width: 750px) {
   .hero-home {
     height: 500px;
+  }
+  .img-hero-home {
+      height: 680px;
+      width: 50%;
+  }
+  .img-galery {
+      width: 500px;
+  }
+  .frame-yt {
+      width: 50%;
+      height: 680px;
   }
   .box-trainer {
     height: auto;
@@ -245,7 +290,6 @@ img {
     grid-template-columns: 1fr 1fr;
   }
   .section-profile-sekolah {
-    grid-template-columns: 1fr 1fr;
   }
   .section-galery {
   }
@@ -254,6 +298,9 @@ img {
   }
   .mb-lg-25 {
     margin-bottom: 25px;
+  }
+  .con-galery {
+      flex-wrap: wrap;
   }
 }
 

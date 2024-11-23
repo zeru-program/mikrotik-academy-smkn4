@@ -7,6 +7,7 @@ import HeaderNavbarLarge from "../components/HeaderNavbarLarge"
 import GetCms from "../../backend/GetCms";
 import GetCmsImg from "../../backend/GetCmsImg";
 import GetTrainer from "../../backend/GetTrainer";
+import GetGalery from "../../backend/GetGalery";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -38,7 +39,7 @@ const HomeSection = () => {
   const { dataCms } = GetCms()
   return (
     <section className="w-100 shadow-hover bg-sc mb25 box-opening shadow-sm py-3 d-flex flex-wrap" data-aos="fade-up" data-aos-delay="2300">
-      <div className="container-fluid">
+      <div className="container-fluid flex-wrap d-flex">
         <img
           src={dataCmsImg.find((item) => item.name === "hero_kepsek" && item.status == true)?.img || ""}
           style={{ pointerEvents: "none" }}
@@ -47,6 +48,8 @@ const HomeSection = () => {
           data-aos-delay="2500"
           alt="Picture Kepala Sekolah"
         />
+        <iframe className="frame-yt" src="https://www.youtube.com/embed/ux5JMT6ZyMM">
+        </iframe>
       </div>
       <div className="container-fluid mt-2">
         <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "h1")?.content || "Sambutan Kepala Sekolah"}</h1>
@@ -83,10 +86,11 @@ const HomeSection = () => {
 const ProfileSekolah = () => {
   const { dataCmsImg } = GetCmsImg();
   const { dataCms } = GetCms()
+  const { dataGalery } = GetGalery()
   return (
     <section className="w-100 p-0 section-profile-sekolah gap-lg-25 mb-lg-2 d-grid" data-aos="fade-up" id="profile-sekolah">
-      <div className="d-flex flex-column">
-        <div className="w-auto shadow-hover bg-sc mb25 box-ps-1 shadow-sm py-3 d-flex flex-column">
+      <div className="d-flex w-100 flex-column">
+        <div className="w-100 shadow-hover bg-sc mb25 box-ps-1 shadow-sm py-3 d-flex flex-column">
           <div className="w-100 justify-content-center d-flex">
             <img data-aos="zoom-in" data-aos-delay="500" src={dataCmsImg.find((item) => item.name === "profile_mikrotik_academy" && item.status == true)?.img || ""} className="" style={{ width: "90%" }} alt="logo mikrotik" />
           </div>
@@ -100,7 +104,7 @@ const ProfileSekolah = () => {
             </p>
           </div>
         </div>
-        <div className="w-auto shadow-hover bg-sc mb25 box-ps-2 shadow-sm py-3 d-flex" data-aos="fade-up">
+        <div className="w-100 shadow-hover bg-sc mb25 box-ps-2 shadow-sm py-3 d-flex" data-aos="fade-up">
           <div className="container-fluid">
             <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p2")?.content || "Loading.."}</h1>
             <div className="position-relative con-hr w-100">
@@ -112,15 +116,22 @@ const ProfileSekolah = () => {
             </p>
           </div>
         </div>
-      </div>
-      <div className="w-auto shadow-hover bg-sc mb-2 box-ps-3 shadow-sm py-3 d-flex" data-aos="fade-up">
+      <div className="w-100 shadow-hover bg-sc mb-2 box-ps-3 shadow-sm py-3 d-flex" data-aos="fade-up">
         <div className="container-fluid">
           <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "p4")?.content || "Loading.."}</h1>
           <div className="position-relative con-hr w-100">
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
           </div>
+          <div className="d-flex con-galery mt-2 gap-3">
+           {
+               dataGalery.map((gr, index) => (
+               <img data-aos="zoom-in" data-aos-delay="500" className="img-galery" src={gr.img} />
+               ))
+           }
+          </div>
         </div>
+      </div>
       </div>
     </section>
   )
@@ -141,15 +152,15 @@ const MateriManfaat = () => {
             MikroTik Academy akan memberikan sertifikasi MTCNA (MikroTik Certified Network Associate) yang menjadi langkah awal bagi peserta training untuk bergabung dalam asosiasi dan sebagai syarat untuk mengambil sertifikasi yang lebih tinggi dari MikroTik.
           </p>
 
-          <p className="m-0">Materi MTCNA di antaranya:</p>
-          <p className="m-0">1.Introduction to Mikrotik</p>
-          <p className="m-0">2.DHCP</p>
-          <p className="m-0">3.Bridge</p>
-          <p className="m-0">4.Routing</p>
-          <p className="m-0">5.Firewall</p>
-          <p className="m-0">6.Quality of Service</p>
-          <p className="m-0">7.Wireless</p>
-          <p className="m-0">8.Tunnel</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">Materi MTCNA di antaranya:</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">1.Introduction to Mikrotik</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">2.DHCP</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">3.Bridge</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">4.Routing</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">5.Firewall</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">6.Quality of Service</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">7.Wireless</p>
+          <p data-aos="fade-up" data-aos-delay="500" className="m-0">8.Tunnel</p>
         </div>
       </div>
       <div data-aos="fade-up" className="bg-sc shadow-hover box-mt-2 shadow-sm py-3 d-flex">
@@ -159,7 +170,78 @@ const MateriManfaat = () => {
             <div className="hr-ac position-absolute" />
             <hr className="w-100" />
           </div>
-          <p data-aos="fade-up" data-aos-delay="800">{dataCms.find((item) => item.id === "mm4")?.content || "Loading.."}</p>
+          <div data-aos="fade-up" data-aos-delay="800" className="d-flex flex-wrap gap-3 pb-3 mt-3">
+           <div className="box-manfaat rounded-2 py-3 shadow container-fluid">
+            <h1 className="mb-0 text-ac">{dataCms.find((item) => item.id === "mm4")?.content || "Loading.."}</h1>
+             <p className="m-0">{dataCms.find((item) => item.id === "mm5")?.content || "Loading.."}</p>
+           </div>
+           <div className="box-manfaat rounded-2 py-3 shadow container-fluid">
+            <h1 className="mb-0 text-ac">{dataCms.find((item) => item.id === "mm6")?.content || "Loading.."}</h1>
+             <p className="m-0">{dataCms.find((item) => item.id === "mm7")?.content || "Loading.."}</p>
+           </div>
+           <div className="box-manfaat rounded-2 py-3 shadow container-fluid">
+            <h1 className="mb-0 text-ac">{dataCms.find((item) => item.id === "mm8")?.content || "Loading.."}</h1>
+             <p className="m-0">{dataCms.find((item) => item.id === "mm9")?.content || "Loading.."}</p>
+           </div>
+           <div className="box-manfaat rounded-2 py-3 shadow container-fluid">
+            <h1 className="mb-0 text-ac">{dataCms.find((item) => item.id === "mm10")?.content || "Loading.."}</h1>
+             <p className="m-0">{dataCms.find((item) => item.id === "mm11")?.content || "Loading.."}</p>
+           </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const Sertifikasi = () => {
+  const { dataCmsImg } = GetCmsImg();
+  const { dataCms } = GetCms()
+  return (
+    <section className="w-100 bg-sc shadow-hover mb-4 box-partner shadow-sm py-3 d-flex flex-wrap">
+      <div className="container-fluid">
+       <img data-aos="fade-up" src={dataCmsImg.find((item) => item.name === "sertifikasi_banner" && item.status == true)?.img || ""} alt="img route sertifikasi" className="w-100 object-fit-cover" />
+       <h1 data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "s1")?.content || "Loading.."}</h1>
+        <div className="position-relative con-hr w-100">
+          <div className="hr-ac position-absolute" />
+          <hr className="w-100" />
+        </div>
+        <p data-aos="fade-up" data-aos-delay="500">{dataCms.find((item) => item.id === "s2")?.content || "Loading.."}</p>
+        <div className="w-100 mt-3 p-3 mb-4 gap-3 d-flex con-galery">
+        {
+  dataCms
+    .filter((cms) => {
+      // Ambil hanya data dari S3 hingga S22
+      const num = parseInt(cms.id.replace('s', ''), 10);
+      return num >= 3 && num <= 22;
+    })
+    .sort((a, b) => {
+      // Sorting berdasarkan angka
+      const numA = parseInt(a.id.replace('s', ''), 10);
+      const numB = parseInt(b.id.replace('s', ''), 10);
+      return numA - numB;
+    })
+    .reduce((result, cms) => {
+      const num = parseInt(cms.id.replace('s', ''), 10);
+      if (num % 2 === 1) {
+        // Jika ganjil, tambahkan ke `title` pada kotak baru
+        result.push({ title: cms.content, content: null });
+      } else {
+        // Jika genap, tambahkan `content` ke kotak terakhir
+        if (result.length > 0) {
+          result[result.length - 1].content = cms.content;
+        }
+      }
+      return result;
+    }, [])
+    .map((box, index) => (
+      <div className="box-manfaat rounded-2 py-4 shadow container-fluid" key={index} data-aos="fade-up" data-aos-delay="500">
+        <h1 className="mb-0 text-ac">{box.title || "Loading.."}</h1>
+        <p className="m-0">{box.content || "Loading.."}</p>
+      </div>
+    ))
+}
+
         </div>
       </div>
     </section>
@@ -235,7 +317,7 @@ const TrainerSection = () => {
   );
 };
 
-const GaleryKomentar = () => {
+const Komentar = () => {
   return (
     <section className="w-100 section-galery py-3 gap25 d-grid" data-aos="fade-up">
       <div className="bg-sc shadow-hover box-gk-2 shadow-sm py-3 d-flex">
@@ -270,9 +352,10 @@ const Home = () => {
         <HomeSection />
         <ProfileSekolah />
         <MateriManfaat />
+        <Sertifikasi />
         <TrainerSection />
         {/* <Partner /> */}
-        <GaleryKomentar />
+        {/*<Komentar />*/}
       </main>
       <Footer />
     </div>
